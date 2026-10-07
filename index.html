@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600&text=骰壹贰叁肆伍陆柒捌玖拾&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600&text=许壹贰叁肆伍陆柒捌玖拾&display=swap">
 <style>
 /* Layout: one dark room. Invitation stage → fixed top bar + single editorial column (max 1180px) → tables laid out as physical objects. */
 :root{
@@ -32,7 +32,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
    radial-gradient(1100px 640px at 90% -14%,rgba(143,23,29,.22),transparent 62%),
    radial-gradient(900px 620px at -14% 112%,rgba(143,23,29,.10),transparent 60%),
    radial-gradient(760px 420px at 50% 125%,rgba(199,164,91,.05),transparent 70%)}
-body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:400;opacity:.06;mix-blend-mode:overlay;
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:400;opacity:.03;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 button,input,textarea,select{font:inherit;color:inherit}
 button{background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -128,7 +128,7 @@ img{max-width:100%}
 /* ---------- app shell ---------- */
 #app{position:relative;z-index:5;min-height:100dvh}
 .wrap{width:100%;max-width:1180px;margin-inline:auto;padding-inline:clamp(16px,4vw,40px)}
-.topbar{position:sticky;top:0;z-index:50;padding-top:env(safe-area-inset-top,0px);background:linear-gradient(180deg,rgba(11,11,11,.92),rgba(11,11,11,.78));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar{position:sticky;top:0;z-index:50;padding-top:env(safe-area-inset-top,0px);background:rgba(11,11,11,.97);border-bottom:1px solid var(--line)}
 .topbar-in{height:var(--bar-h);display:flex;align-items:center;gap:28px}
 .brand{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:700;letter-spacing:.26em;margin-right:auto;min-width:0}
 .brand svg{width:30px;height:30px;flex:none}
@@ -195,7 +195,7 @@ a.scard:hover{border-color:var(--line-2);transform:translateY(-2px)}
 .banner{padding:14px 18px;border-radius:14px;border:1px solid rgba(199,164,91,.3);color:var(--gold);font-size:13px;background:rgba(199,164,91,.05)}
 
 .tables{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:clamp(28px,4vw,40px) clamp(18px,3vw,30px)}
-.tcard{display:flex;flex-direction:column;gap:12px;min-width:0}
+.tcard{display:flex;flex-direction:column;gap:12px;min-width:0;contain:layout style}
 .thead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-inline:4px}
 .thead h2{font-size:12px;letter-spacing:.3em;font-weight:700}
 .thead p{font-size:11px;letter-spacing:.2em;color:var(--faint);font-variant-numeric:tabular-nums}
@@ -249,6 +249,18 @@ a.scard:hover{border-color:var(--line-2);transform:translateY(-2px)}
 .contrib .k{font-size:10.5px;letter-spacing:.3em;color:var(--faint);font-weight:600}
 .contrib .v{font-size:clamp(20px,2.6vw,26px);font-weight:700;letter-spacing:-.02em}
 .contrib .s{font-size:13px;color:var(--muted)}
+.picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:10px 28px;margin:10px 0 8px}
+.pick{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pick .pk{font-size:9.5px;letter-spacing:.24em;color:var(--faint);font-weight:600}
+.pick .pk b{color:#e2676d;font-weight:600}
+.pick .pv{font-size:clamp(18px,2.2vw,22px);font-weight:700;letter-spacing:-.02em}
+.pick:not(.on) .pv{color:var(--faint);font-weight:500}
+.pick .ps{font-size:12.5px;color:var(--muted)}
+.pcat-head .req{margin-left:auto;font-size:9.5px;letter-spacing:.24em;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted)}
+.pcat-head .req.must{border-color:rgba(181,33,40,.6);color:#f0b9bb}
+.pcat-head .req.ok{border-color:rgba(199,164,91,.5);color:var(--gold)}
+.pbtns{display:flex;align-items:center;gap:14px}
+.pbtns .tag{flex:1;display:inline-flex;align-items:center;justify-content:center;min-height:36px;border-radius:999px;border:1px solid rgba(199,164,91,.45);color:var(--gold);font-size:10.5px;letter-spacing:.2em;font-weight:600}
 .pcat{display:flex;flex-direction:column;gap:18px}
 .pcat-head{display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
 .pcat-head h2{font-size:12px;letter-spacing:.34em;font-weight:700}
@@ -267,7 +279,7 @@ a.scard:hover{border-color:var(--line-2);transform:translateY(-2px)}
 .status.more{color:var(--gold)}
 .status.covered{color:var(--muted)}
 .status.full{color:var(--faint)}
-.meter{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.meter{display:grid;gap:4px}
 .meter i{height:2px;border-radius:2px;background:rgba(242,239,232,.10)}
 .meter i.on{background:var(--ivory)}
 .pitem.needy .meter i.on{background:#e2676d}
@@ -327,11 +339,12 @@ a.scard:hover{border-color:var(--line-2);transform:translateY(-2px)}
 .toast.error{border-color:rgba(181,33,40,.6)} .toast.error i{background:var(--red-hi);box-shadow:0 0 8px var(--red-hi)}
 .toast.ok i{background:var(--gold);box-shadow:0 0 8px var(--gold)}
 .loader{display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px 0}
-.loader .ld{display:flex;gap:7px}
-.loader .ld span{width:13px;height:13px;border-radius:3.5px;background:var(--ivory);position:relative;animation:tumble 1s var(--ease) infinite}
-.loader .ld span:nth-child(2){animation-delay:.12s;background:#e7e1d4}
-.loader .ld span:nth-child(3){animation-delay:.24s}
-.loader .ld span::after{content:"";position:absolute;left:50%;top:50%;width:3px;height:3px;margin:-1.5px;border-radius:50%;background:var(--red-hi)}
+.loader .ld{display:flex;gap:6px}
+.loader .ld span{width:14px;height:14px;border-radius:3.5px;animation:tumble 1.1s var(--ease) infinite;
+  background:radial-gradient(circle at 29% 29%,var(--red-hi) 0 1.55px,transparent 1.9px),radial-gradient(circle at 71% 29%,var(--red-hi) 0 1.55px,transparent 1.9px),
+    radial-gradient(circle at 29% 71%,var(--red-hi) 0 1.55px,transparent 1.9px),radial-gradient(circle at 71% 71%,var(--red-hi) 0 1.55px,transparent 1.9px),linear-gradient(145deg,#FBF8F1,#DED6C6)}
+.loader .ld span:nth-child(2){animation-delay:.09s}.loader .ld span:nth-child(3){animation-delay:.18s}.loader .ld span:nth-child(4){animation-delay:.27s}
+.loader .ld span:nth-child(5){animation-delay:.36s}.loader .ld span:nth-child(6){animation-delay:.45s}
 .loader p{font-size:10.5px;letter-spacing:.3em;color:var(--muted);font-weight:600}
 @keyframes tumble{0%{transform:translateY(0) rotate(0)}35%{transform:translateY(-9px) rotate(90deg)}65%{transform:translateY(0) rotate(180deg)}80%{transform:translateY(-2px) rotate(180deg)}100%{transform:translateY(0) rotate(180deg)}}
 
@@ -424,7 +437,7 @@ table.ppl td.dim{color:var(--faint)}
   .chip{padding:3px;border-color:transparent}
   main{padding-bottom:calc(var(--tab-h) + 96px + env(safe-area-inset-bottom,0px))}
   .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:60;padding-bottom:env(safe-area-inset-bottom,0px);
-    background:rgba(11,11,11,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+    background:rgba(11,11,11,.98);border-top:1px solid var(--line)}
   .tabbar a{height:var(--tab-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;font-size:9.5px;letter-spacing:.2em;font-weight:600;color:var(--faint)}
   .tabbar a::before{content:"";width:4px;height:4px;border-radius:50%;background:transparent}
   .tabbar a.on{color:var(--ivory)}
@@ -471,8 +484,8 @@ table.ppl td.dim{color:var(--faint)}
           </svg>
         </div>
         <div class="seal" id="seal">
-          <div class="seal-half seal-l"><b>骰</b></div>
-          <div class="seal-half seal-r"><b>骰</b></div>
+          <div class="seal-half seal-l"><b>许</b></div>
+          <div class="seal-half seal-r"><b>许</b></div>
         </div>
       </div>
     </div>
@@ -497,7 +510,7 @@ table.ppl td.dim{color:var(--faint)}
 <div id="app" hidden>
   <header class="topbar">
     <div class="wrap topbar-in">
-      <a class="brand" href="#home" aria-label="Home"><svg id="navEmblem" viewBox="0 0 200 200" aria-hidden="true"></svg><span id="brandName">DICE GAME</span></a>
+      <a class="brand" href="#home" aria-label="Home"><svg id="navEmblem" viewBox="0 0 200 200" aria-hidden="true"></svg><span id="brandName">DICE GAME 2026</span></a>
       <nav class="nav" id="nav" aria-label="Main"></nav>
       <span class="preview-flag" id="previewFlag" hidden>PREVIEW</span>
       <div class="user">
@@ -637,7 +650,7 @@ function toast(text, kind = '') {
   anim(t, [{ opacity: 0, transform: 'translateY(10px) scale(.97)' }, { opacity: 1, transform: 'none' }], { duration: 320 });
   setTimeout(() => anim(t, [{ opacity: 1 }, { opacity: 0, transform: 'translateY(6px)' }], { duration: 300 }).then(() => t.remove()), 3200);
 }
-const loaderHTML = text => `<div class="loader" role="status"><div class="ld"><span></span><span></span><span></span></div><p>${esc(text)}</p></div>`;
+const loaderHTML = text => `<div class="loader" role="status"><div class="ld"><span></span><span></span><span></span><span></span><span></span><span></span></div><p>${esc(text)}</p></div>`;
 const dieHTML = (n, d) => {
   const on = { 1: [5], 2: [3, 7], 3: [3, 5, 7], 4: [1, 3, 7, 9], 5: [1, 3, 5, 7, 9], 6: [1, 4, 7, 3, 6, 9] }[n];
   return `<span class="die ${n === 1 || n === 4 ? 'red' : ''}" style="${d ? `--d:${d}px` : ''}">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => `<i class="${on.includes(i) ? 'on' : ''}"></i>`).join('')}</span>`;
@@ -905,10 +918,11 @@ function go(r) { if (location.hash === '#' + r) { renderView(true); } else locat
 
 function renderChrome() {
   const st = S.state; if (!st) return;
-  $('#brandName').textContent = st.settings.short_name || 'DICE GAME';
+  $('#brandName').textContent = st.settings.short_name || 'DICE GAME 2026';
   document.title = st.settings.event_name || 'A Private Invitation';
   const me = st.me;
-  $('#avatar').innerHTML = me.picture ? `<img src="${esc(me.picture)}" alt="" referrerpolicy="no-referrer">` : esc((me.first || '?').charAt(0).toUpperCase());
+  const av = me.picture ? `<img src="${esc(me.picture)}" alt="" referrerpolicy="no-referrer">` : esc((me.first || '?').charAt(0).toUpperCase());
+  if (S.avatar !== av) { $('#avatar').innerHTML = av; S.avatar = av; }
   $('#chipName').textContent = (me.first || '').toUpperCase();
   $$('#nav a, #tabbar a').forEach(a => a.classList.toggle('on', a.dataset.r === S.route));
   const sticky = $('#sticky');
@@ -956,16 +970,36 @@ function renderView(animate) {
   const v = $('#view');
   const fn = { home: viewHome, seating: viewSeating, potluck: viewPotluck, review: viewReview, info: viewInfo, admin: viewAdmin }[S.route] || viewHome;
   if (S.route === 'admin' && !st.me.isAdmin) { location.hash = 'home'; return; }
-  v.innerHTML = fn(st);
+  const html = fn(st);
+  if (!animate && S.route !== 'admin' && S.rendered === S.route && v.firstElementChild) {
+    const t = document.createElement('main'); t.innerHTML = html;
+    morphChildren(v, t);                 // live updates patch only what changed, so nothing jumps
+  } else v.innerHTML = html;
+  S.rendered = S.route;
   if (S.route === 'seating') afterSeating(animate);
   if (animate) anim(v, [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 420, fill: 'none' });
+}
+
+function morph(a, b) {
+  if (a.nodeType !== b.nodeType || a.nodeName !== b.nodeName) { a.replaceWith(b); return; }
+  if (a.nodeType === 3 || a.nodeType === 8) { if (a.nodeValue !== b.nodeValue) a.nodeValue = b.nodeValue; return; }
+  if (a.nodeType !== 1) return;
+  for (const at of Array.from(a.attributes)) if (!b.hasAttribute(at.name)) a.removeAttribute(at.name);
+  for (const at of Array.from(b.attributes)) if (a.getAttribute(at.name) !== at.value) a.setAttribute(at.name, at.value);
+  morphChildren(a, b);
+}
+function morphChildren(a, b) {
+  const ac = Array.from(a.childNodes), bc = Array.from(b.childNodes);
+  bc.forEach((n, i) => { if (ac[i]) morph(ac[i], n); else a.appendChild(n); });
+  for (let i = bc.length; i < ac.length; i++) ac[i].remove();
 }
 
 /* ---------------- HOME ---------------- */
 function viewHome(st) {
   const me = st.me, set = st.settings;
-  const seat = me.seat, c = me.contribution, done = seat && c;
-  const left = (seat ? 0 : 1) + (c ? 0 : 1);
+  const seat = me.seat, c = me.contribution, pd = !!me.potluckDone, done = seat && pd;
+  const more = (me.contributions || []).filter(x => !c || x.itemId !== c.itemId);
+  const left = (seat ? 0 : 1) + (pd ? 0 : 1);
   return `<div class="page">
     <section class="hero">
       <h1 class="display">WELCOME, ${esc((me.first || '').toUpperCase())}</h1>
@@ -977,15 +1011,15 @@ function viewHome(st) {
         <span class="k">YOUR SEAT</span>
         ${seat ? `<span class="v">${esc(titleCase(seat.tableName))}</span><span class="v2">Seat ${pad2(seat.seat)}</span>` : `<span class="v dim">Not selected</span><span class="cta arrow">CHOOSE YOUR SEAT</span>`}
       </a>
-      <a class="scard ${c ? 'done' : ''}" href="#potluck">
+      <a class="scard ${pd ? 'done' : ''}" href="#potluck">
         <span class="k">YOUR CONTRIBUTION</span>
-        ${c ? `<span class="v">${esc(c.name)}</span><span class="v2">${servesLine(c.serving)}</span>` : `<span class="v dim">Not chosen</span><span class="cta arrow">CHOOSE WHAT TO BRING</span>`}
+        ${c ? `<span class="v">${esc(c.name)}</span><span class="v2">${servesLine(c.serving)}${more.length ? ' · + ' + esc(more.map(x => x.name).join(', ')) : ''}</span>${pd ? '' : '<span class="cta arrow">PICK A FOOD ITEM</span>'}` : `<span class="v dim">Not chosen</span><span class="cta arrow">CHOOSE WHAT TO BRING</span>`}
       </a>
       <a class="scard ${me.ready && done ? 'done' : ''}" href="#review">
         <span class="k">EVENT STATUS</span>
         ${me.ready && done ? `<span class="v">You're all set.</span><span class="v2">See you at the table.</span>`
           : done ? `<span class="v">Almost there.</span><span class="cta arrow">REVIEW YOUR NIGHT</span>`
-          : `<span class="v">${left} step${left > 1 ? 's' : ''} left.</span><span class="v2">${seat ? 'Pick what you’ll bring.' : 'Start with your seat.'}</span>`}
+          : `<span class="v">${left} step${left > 1 ? 's' : ''} left.</span><span class="v2">${seat ? 'Pick the food you’ll bring.' : 'Start with your seat.'}</span>`}
       </a>
     </section>
     <section class="notes">
@@ -1122,6 +1156,17 @@ function onSeat(btn) {
 }
 
 /* ---------------- POTLUCK ---------------- */
+// Each guest picks at most one item per category. Categories in Settings ▸ potluck_required (default FOOD) are required.
+const reqCats = st => String(st.settings.potluck_required || 'FOOD').split(/[,;]+/).map(c => c.trim().toUpperCase()).filter(Boolean);
+function potluckOf(st) {
+  const req = reqCats(st), mine = st.me.contributions || [];
+  const cats = [];
+  st.items.forEach(it => { if (!cats.includes(it.category)) cats.push(it.category); });
+  const missing = req.filter(c => cats.includes(c) && !mine.some(m => m.category === c));
+  const optional = cats.filter(c => !req.includes(c));
+  return { req, mine, cats, missing, optional, done: mine.length > 0 && !missing.length };
+}
+const listWords = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
 function itemStatus(it) {
   if (it.max && it.count >= it.max) return ['full', 'FULL'];
   if (it.count === 0 || (it.needed && it.count < Math.max(1, it.target))) return ['needed', 'NEEDED'];
@@ -1129,66 +1174,92 @@ function itemStatus(it) {
   return ['covered', 'WELL COVERED'];
 }
 function viewPotluck(st) {
-  const me = st.me, c = me.contribution, open = st.settings.potluck_open;
-  const cats = [];
-  st.items.forEach(it => { let g = cats.find(x => x.name === it.category); if (!g) cats.push(g = { name: it.category, items: [] }); g.items.push(it); });
+  const open = st.settings.potluck_open, P = potluckOf(st);
+  const groups = P.cats.map(name => ({ name, items: st.items.filter(i => i.category === name) }));
+  const tc = c => titleCase(c);
+  const hint = P.done
+    ? (P.optional.length ? `You’re covered. If you can, add ${listWords(P.optional.map(c => c.endsWith('S') ? 'a ' + c.slice(0, -1).toLowerCase() : 'a ' + c.toLowerCase() + ' item'))} too. One per category.` : 'You’re covered.')
+    : `Pick 1 ${listWords(P.missing.map(c => tc(c).toLowerCase()))} item to lock in.${P.optional.length ? ` ${listWords(P.optional.map(tc))} ${P.optional.length > 1 ? 'are' : 'is'} optional, one each.` : ''}`;
   return `<div class="page">
     <section class="shead"><p class="eyebrow">DICE • FOOD • FRIENDS</p><h1 class="display">THE POTLUCK</h1><p class="lede">Bring something good to the table.</p></section>
-    ${!open ? '<p class="banner">The potluck is locked by the host. Your pick is saved.</p>' : ''}
-    ${c ? `<section class="contrib"><div class="what"><span class="k">YOUR CONTRIBUTION</span><span class="v">${esc(c.name)}</span><span class="s">${servesLine(c.serving)}</span></div>
-        <div class="acts">${open ? '<button class="btn btn-line btn-sm" data-act="change-item">CHANGE CONTRIBUTION</button>' : ''}${st.me.seat ? '<a class="link arrow" href="#review">REVIEW YOUR NIGHT</a>' : '<a class="link arrow" href="#seating">CHOOSE YOUR SEAT</a>'}</div></section>`
-      : `<section class="contrib empty"><div class="what"><span class="k">YOUR CONTRIBUTION</span><span class="v">Not chosen</span><span class="s">Pick one thing you’ll bring. Items marked needed help most.</span></div></section>`}
+    ${!open ? '<p class="banner">The potluck is locked by the host. Your picks are saved.</p>' : ''}
+    <section class="contrib ${P.mine.length ? '' : 'empty'}">
+      <div class="what"><span class="k">YOUR CONTRIBUTION</span>
+        <div class="picks">${P.cats.map(c => { const m = P.mine.find(x => x.category === c); const r = P.req.includes(c);
+          return `<div class="pick ${m ? 'on' : ''}"><span class="pk">${esc(c)} · ${r ? (m ? 'REQUIRED' : '<b>REQUIRED</b>') : 'OPTIONAL'}</span><span class="pv">${m ? esc(m.name) : (r ? 'Not chosen' : '—')}</span>${m && m.serving ? `<span class="ps">${servesLine(m.serving)}</span>` : ''}</div>`; }).join('')}</div>
+        <span class="s">${esc(hint)}</span></div>
+      ${P.done ? '<div class="acts"><a class="link arrow" href="#review">REVIEW YOUR NIGHT</a></div>' : ''}
+    </section>
     <div id="plist" style="display:flex;flex-direction:column;gap:clamp(40px,6vw,60px)">
-    ${cats.map(g => `<section class="pcat"><div class="pcat-head"><h2>${esc(g.name)}</h2><span>${g.items.reduce((s, i) => s + i.count, 0)} bringing</span></div>
-      <div class="pgrid">${g.items.map(it => itemCard(it, open)).join('')}</div></section>`).join('')}
+    ${groups.map(g => { const r = P.req.includes(g.name), has = P.mine.some(m => m.category === g.name);
+      return `<section class="pcat"><div class="pcat-head"><h2>${esc(g.name)}</h2><span>${g.items.reduce((s, i) => s + i.count, 0)} bringing</span>
+        <span class="req ${has ? 'ok' : r ? 'must' : ''}">${has ? 'PICKED · 1 OF 1' : r ? 'REQUIRED · PICK 1' : 'OPTIONAL · UP TO 1'}</span></div>
+      <div class="pgrid">${g.items.map(it => itemCard(it, open, P)).join('')}</div></section>`; }).join('')}
     </div>
     ${st.contributors.length ? `<section class="block"><p class="eyebrow">WHO’S BRINGING WHAT</p><div class="ledger">${st.contributors.map(x => `<div><span>${esc(x.name)}</span><span>${esc(x.item)}</span></div>`).join('')}</div></section>` : ''}
   </div>`;
 }
-function itemCard(it, open) {
+function itemCard(it, open, P) {
   const [cls, label] = itemStatus(it);
-  const fill = it.target > 0 ? Math.min(10, Math.round(it.count / it.target * 8)) : (it.count ? 10 : 0);
+  const slots = it.max || 8;                               // the bar shows the item's real limit (8 when unlimited)
+  const fill = Math.min(it.count, slots);
   const full = cls === 'full';
+  const sameCat = P.mine.find(m => m.category === it.category && m.itemId !== it.id);
   const names = it.names.slice(0, 3).join(', ') + (it.names.length > 3 ? ` +${it.names.length - 3}` : '');
   const rec = /^\d/.test(it.serving) ? `RECOMMENDED FOR ${esc(it.serving)} PEOPLE` : `RECOMMENDED: ${esc(String(it.serving).toUpperCase())}`;
+  const btn = it.mine
+    ? `<div class="pbtns"><span class="tag">BRINGING THIS</span>${open ? `<button class="link" data-item="${esc(it.id)}" data-mode="remove">REMOVE</button>` : ''}</div>`
+    : `<button class="btn btn-line btn-sm" data-item="${esc(it.id)}" data-mode="${sameCat ? 'switch' : 'add'}" ${full || !open ? 'disabled' : ''}>${full ? 'FULL' : sameCat ? 'SWITCH TO THIS' : 'I’LL BRING THIS'}</button>`;
   return `<article class="pitem ${it.mine ? 'mine' : ''} ${full ? 'full' : ''} ${cls === 'needed' ? 'needy' : ''}">
     <div class="top"><h3>${esc(it.name)}</h3><span class="status ${cls}">${label}</span></div>
     ${it.description ? `<p class="desc">${esc(it.description)}</p>` : ''}
     ${it.serving ? `<p class="rec">${rec}</p>` : ''}
-    <div class="meter" aria-hidden="true">${Array.from({ length: 10 }, (_, i) => `<i class="${i < fill ? 'on' : ''}"></i>`).join('')}</div>
-    <p class="who">${it.count ? `<b>${it.count} ${it.count === 1 ? 'person' : 'people'} bringing</b> · ${esc(names)}` : 'No one yet'}${it.max ? ` · max ${it.max}` : ''}</p>
-    ${it.mine ? `<button class="btn btn-line btn-sm" disabled>YOU’RE BRINGING THIS</button>`
-      : `<button class="btn btn-line btn-sm" data-item="${esc(it.id)}" ${full || !open ? 'disabled' : ''}>${full ? 'FULL' : 'I’LL BRING THIS'}</button>`}
+    <div class="meter" style="grid-template-columns:repeat(${slots},1fr)" role="img" aria-label="${it.count} of ${it.max ? it.max : 'about ' + slots} spots taken">${Array.from({ length: slots }, (_, i) => `<i class="${i < fill ? 'on' : ''}"></i>`).join('')}</div>
+    <p class="who">${it.count ? `<b>${it.count}${it.max ? ' / ' + it.max : ''} bringing</b> · ${esc(names)}` : (it.max ? `No one yet · ${it.max} spots` : 'No one yet')}</p>
+    ${btn}
   </article>`;
 }
-function onItem(id) {
+function onItem(id, mode) {
   const st = S.state, it = st.items.find(x => x.id === id); if (!it) return;
-  const cur = st.me.contribution;
+  const P = potluckOf(st);
   const serves = /^\d/.test(it.serving) ? `approximately ${esc(it.serving)} people` : esc(it.serving);
+  const cur = P.mine.find(m => m.category === it.category && m.itemId !== it.id);
+  const required = P.req.includes(it.category);
+  if (mode === 'remove') {
+    return panel({
+      eyebrow: 'REMOVE', title: `Remove ${esc(it.name)} from your list?`,
+      body: required ? `${esc(titleCase(it.category))} is required, so pick another ${esc(it.category.toLowerCase())} item before you lock in.` : 'Its spot opens up for someone else.',
+      confirm: 'REMOVE', danger: true, busyText: 'SETTING THE TABLE...',
+      action: () => api('releaseItem', { itemId: id }), after: () => toast(`${it.name} removed.`, 'ok'),
+      failText: 'Your contribution could not be saved.',
+    });
+  }
   panel({
-    eyebrow: cur ? 'CHANGE CONTRIBUTION' : 'THE POTLUCK',
+    eyebrow: cur ? `CHANGE YOUR ${esc(it.category)} PICK` : `THE POTLUCK · ${esc(it.category)}`,
     title: cur ? `Switch from ${esc(cur.name)} to ${esc(it.name)}?` : `Bring ${esc(it.name)} for ${serves}?`,
-    body: cur ? `${esc(it.name)} · for ${serves}.` : 'You can change this any time before the night.',
+    body: cur ? `One ${esc(it.category.toLowerCase())} item per person. ${esc(it.name)} · for ${serves}.`
+      : required ? 'This covers your required pick. You can change it any time before the night.' : 'An optional extra. Thank you! You can remove it any time.',
     confirm: 'CONFIRM',
     busyText: 'SETTING THE TABLE...',
     success: `YOU’RE BRINGING ${esc(it.name.toUpperCase())}`,
     successSub: it.serving ? servesLine(it.serving).toUpperCase() : '',
     action: () => api('claimItem', { itemId: id }),
     failText: 'Your contribution could not be saved.',
-    after: () => { if (st.me.seat && !st.me.ready) setTimeout(() => toast('Both done. Review your night when you’re ready.', 'ok'), 200); },
+    after: () => { const s2 = S.state; if (s2.me.potluckDone && s2.me.seat && !s2.me.ready && !P.done) setTimeout(() => toast('All set. Review your night when you’re ready.', 'ok'), 200); },
   });
 }
 
 /* ---------------- REVIEW ---------------- */
 function viewReview(st) {
-  const me = st.me, seat = me.seat, c = me.contribution, done = seat && c;
+  const me = st.me, seat = me.seat, c = me.contribution, picks = me.contributions || [], done = seat && me.potluckDone;
+  const extra = picks.filter(x => !c || x.itemId !== c.itemId);
   return `<div class="page">
     <section class="shead"><p class="eyebrow">YOUR NIGHT</p><h1 class="display">${done ? 'YOU’RE READY' : 'ALMOST READY'}</h1>
       <p class="lede">${done ? 'One last look before you lock it in.' : 'Finish the missing step below, then lock it in.'}</p></section>
     <section class="ticket">
       <div class="trow"><span class="k">YOUR SEAT</span>${seat ? `<span class="v">${esc(seat.tableName)}<small>Seat ${pad2(seat.seat)}</small></span>` : '<span class="v dim">Not selected</span>'}
         <a class="link" href="#seating">${seat ? 'EDIT SEAT' : 'CHOOSE SEAT'}</a></div>
-      <div class="trow"><span class="k">YOUR CONTRIBUTION</span>${c ? `<span class="v">${esc(c.name.toUpperCase())}<small>${servesLine(c.serving)}</small></span>` : '<span class="v dim">Not chosen</span>'}
+      <div class="trow"><span class="k">YOUR CONTRIBUTION</span>${c ? `<span class="v">${esc(c.name.toUpperCase())}<small>${servesLine(c.serving)}${extra.length ? ' · plus ' + esc(extra.map(x => x.name).join(', ')) : ''}</small>${me.potluckDone ? '' : '<small>A food item is still needed.</small>'}</span>` : '<span class="v dim">Not chosen</span>'}
         <a class="link" href="#potluck">${c ? 'EDIT CONTRIBUTION' : 'CHOOSE'}</a></div>
       <div class="trow"><span class="k">EVENT</span><span class="v">${esc(st.settings.event_date_display)}<small>${esc(st.settings.start_time)} · ${esc(st.settings.location)}</small></span><span></span></div>
     </section>
@@ -1260,7 +1331,7 @@ function admOverview() {
   const a = S.admin, ppl = a.people.length;
   const active = a.tables.filter(t => t.active);
   const cap = active.reduce((s, t) => s + t.capacity, 0);
-  const seated = a.people.filter(p => p.seat).length, brought = a.people.filter(p => p.item).length, ready = a.people.filter(p => p.ready).length;
+  const seated = a.people.filter(p => p.seat).length, brought = a.people.filter(p => p.potluckDone).length, ready = a.people.filter(p => p.ready).length;
   const needed = a.items.filter(i => i.active && (i.count === 0 || (i.needed && i.count < Math.max(1, i.target))));
   return `<section class="stats">
       <div class="stat"><span class="k">PARTICIPANTS</span><span class="v">${ppl}</span><span class="s">signed in · ${a.accessMode === 'open' ? 'open to any Google account' : a.guestCount + ' on the guest list'}</span></div>
@@ -1308,7 +1379,8 @@ function admTables() {
 function admPotluck() {
   const a = S.admin;
   const cats = [...new Set(a.items.map(i => i.category))];
-  const claims = a.people.filter(p => p.item);
+  const claims = [];
+  a.people.forEach(p => (p.items || []).forEach(it => claims.push({ p, it })));
   return `<section class="block"><div class="block-head"><h2>ITEMS</h2><button class="btn btn-red btn-sm" data-a="add-item">ADD ITEM</button></div>
     <p class="fine">“Target” is how many bringers feels covered. “Max” closes the item when reached (leave blank for no limit).</p>
     ${a.items.map(i => `<div class="edit-card" data-row="${esc(i.id)}">
@@ -1327,7 +1399,7 @@ function admPotluck() {
     </div>`).join('')}
     <datalist id="cats">${cats.map(c => `<option value="${esc(c)}">`).join('')}</datalist></section>
     <section class="block"><div class="block-head"><h2>CONTRIBUTIONS <span class="fine">· ${claims.length}</span></h2></div>
-      <div class="rows">${claims.map(p => `<div class="row"><span class="who">${esc(p.name)} <small>${esc(p.item.name)} · ${esc(p.item.serving)}</small></span><span class="acts"><button class="mini-btn" data-a="assign-item" data-u="${esc(p.uid)}">CHANGE</button><button class="mini-btn danger" data-a="clear-item" data-u="${esc(p.uid)}">REMOVE</button></span></div>`).join('') || '<div class="row"><span class="who dim">NONE YET</span></div>'}</div></section>`;
+      <div class="rows">${claims.map(({ p, it }) => `<div class="row"><span class="who">${esc(p.name)} <small>${esc(it.category)} · ${esc(it.name)} · ${esc(it.serving)}</small></span><span class="acts"><button class="mini-btn" data-a="assign-item" data-u="${esc(p.uid)}" data-i="${esc(it.itemId)}">CHANGE</button><button class="mini-btn danger" data-a="clear-item" data-u="${esc(p.uid)}" data-i="${esc(it.itemId)}">REMOVE</button></span></div>`).join('') || '<div class="row"><span class="who dim">NONE YET</span></div>'}</div></section>`;
 }
 function admContent() {
   const s = S.admin.settings;
@@ -1356,7 +1428,7 @@ function admPeople() {
   return `<section class="block"><div class="block-head"><h2>PARTICIPANTS <span class="fine">· ${a.people.length}</span></h2></div>
     <p class="fine">Guests see first names only. To change the name shown publicly, edit display_name on the Participants tab. To let someone in, add their email on the Guest List tab.</p>
     <div class="tbl-wrap"><table class="ppl"><thead><tr><th>NAME</th><th>SHOWN AS</th><th>EMAIL</th><th>SEAT</th><th>BRINGING</th><th>READY</th><th>LAST SEEN</th></tr></thead><tbody>
-    ${a.people.map(p => `<tr><td>${esc(p.name)}</td><td class="dim">${esc(p.first)}</td><td class="dim">${esc(p.email)}</td><td>${p.seat ? esc(p.seat.table) + ' · ' + pad2(p.seat.seat) : '<span class="dim">—</span>'}</td><td>${p.item ? esc(p.item.name) : '<span class="dim">—</span>'}</td><td>${p.ready ? '<span class="dot-ok" title="Ready"></span>' : ''}</td><td class="dim">${p.lastSeen ? ago(p.lastSeen) : ''}</td></tr>`).join('')}
+    ${a.people.map(p => `<tr><td>${esc(p.name)}</td><td class="dim">${esc(p.first)}</td><td class="dim">${esc(p.email)}</td><td>${p.seat ? esc(p.seat.table) + ' · ' + pad2(p.seat.seat) : '<span class="dim">—</span>'}</td><td>${(p.items || []).length ? esc(p.items.map(i => i.name).join(', ')) + (p.potluckDone ? '' : ' <span class="dim">(no food)</span>') : '<span class="dim">—</span>'}</td><td>${p.ready ? '<span class="dot-ok" title="Ready"></span>' : ''}</td><td class="dim">${p.lastSeen ? ago(p.lastSeen) : ''}</td></tr>`).join('')}
     </tbody></table></div></section>`;
 }
 function admExport() {
@@ -1376,7 +1448,9 @@ function exportCSV(kind) {
       .map(p => [p.name, titleCase(p.seat.table), 'Seat ' + pad2(p.seat.seat)]));
     name = 'seating.csv';
   } else {
-    rows = [['Participant', 'Contribution', 'Serving Size']].concat(a.people.filter(p => p.item).sort((x, y) => x.item.name.localeCompare(y.item.name)).map(p => [p.name, p.item.name, p.item.serving]));
+    const picks = []; a.people.forEach(p => (p.items || []).forEach(i => picks.push([p.name, i.name, i.serving, i.category])));
+    const catOrder = {}; a.items.forEach((i, k) => { if (!(i.category in catOrder)) catOrder[i.category] = k; });
+    rows = [['Participant', 'Contribution', 'Serving Size']].concat(picks.sort((x, y) => (catOrder[x[3]] - catOrder[y[3]]) || x[1].localeCompare(y[1]) || x[0].localeCompare(y[0])).map(r => r.slice(0, 3)));
     name = 'potluck.csv';
   }
   const csv = toCSV(rows);
@@ -1483,14 +1557,16 @@ async function onAdmin(btn) {
     }
     case 'assign-item': {
       const p = person(btn.dataset.u);
-      const opts = A.items.filter(i => i.active).map(i => `<option value="${esc(i.id)}" ${p.item && p.item.itemId === i.id ? 'selected' : ''}>${esc(i.name)} · ${esc(i.category)}</option>`).join('');
+      const curIt = A.items.find(i => i.id === btn.dataset.i);
+      const opts = A.items.filter(i => i.active && (!curIt || i.category === curIt.category)).map(i => `<option value="${esc(i.id)}" ${curIt && curIt.id === i.id ? 'selected' : ''}>${esc(i.name)} · ${esc(i.category)}</option>`).join('');
       return panel({ eyebrow: 'CHANGE CONTRIBUTION', title: esc(p.name), html: `<select class="field" id="aiItem">${opts}</select>`, confirm: 'SAVE',
         read: pn => $('#aiItem', pn).value, action: id => api('adminAssignItem', { userId: p.uid, itemId: id }), after: () => { toast('Contribution changed.', 'ok'); renderView(false); } });
     }
     case 'clear-item': {
       const p = person(btn.dataset.u);
-      return panel({ eyebrow: 'REMOVE', title: `Remove ${esc(p.name)}’s ${esc(p.item.name)}?`, danger: true, confirm: 'REMOVE',
-        action: () => api('adminClearClaim', { userId: p.uid }), after: () => { toast('Contribution removed.', 'ok'); renderView(false); } });
+      const it = (p.items || []).find(i => i.itemId === btn.dataset.i) || { name: 'pick' };
+      return panel({ eyebrow: 'REMOVE', title: `Remove ${esc(p.name)}’s ${esc(it.name)}?`, danger: true, confirm: 'REMOVE',
+        action: () => api('adminClearClaim', { userId: p.uid, itemId: btn.dataset.i }), after: () => { toast('Contribution removed.', 'ok'); renderView(false); } });
     }
     case 'save-content': {
       const v = readRow($('#contentForm'));
@@ -1513,7 +1589,7 @@ async function onAdmin(btn) {
 /* ---------------- one delegated click handler ---------------- */
 document.addEventListener('click', e => {
   const seat = e.target.closest('.seat'); if (seat) return onSeat(seat);
-  const item = e.target.closest('[data-item]'); if (item) return onItem(item.dataset.item);
+  const item = e.target.closest('[data-item]'); if (item) return onItem(item.dataset.item, item.dataset.mode);
   const faq = e.target.closest('[data-faq]');
   if (faq) {
     const i = +faq.dataset.faq, qa = faq.parentElement;
