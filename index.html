@@ -1,0 +1,1576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Private Invitation</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B0B0B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600&text=骰壹贰叁肆伍陆柒捌玖拾&display=swap">
+<style>
+/* Layout: one dark room. Invitation stage → fixed top bar + single editorial column (max 1180px) → tables laid out as physical objects. */
+:root{
+  --ink:#0B0B0B; --char:#121212; --char-2:#191919; --char-3:#202020;
+  --red:#8F171D; --red-hi:#B52128; --gold:#C7A45B; --ivory:#F2EFE8;
+  --muted:rgba(242,239,232,.62); --faint:rgba(242,239,232,.40); --ghost:rgba(242,239,232,.16);
+  --line:rgba(242,239,232,.09); --line-2:rgba(242,239,232,.17);
+  --sans:'Geist','Manrope','Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  --han:'Noto Serif SC','Songti SC','STSong','SimSun',serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --bar-h:64px; --tab-h:62px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--ink);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--ivory);background:var(--ink);min-height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.55;font-size:15px}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+   radial-gradient(1100px 640px at 90% -14%,rgba(143,23,29,.22),transparent 62%),
+   radial-gradient(900px 620px at -14% 112%,rgba(143,23,29,.10),transparent 60%),
+   radial-gradient(760px 420px at 50% 125%,rgba(199,164,91,.05),transparent 70%)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:400;opacity:.06;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+button,input,textarea,select{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+[hidden]{display:none!important}
+:focus-visible{outline:1.5px solid var(--gold);outline-offset:3px;border-radius:6px}
+::selection{background:rgba(181,33,40,.55)}
+
+/* ---------- type ---------- */
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+.eyebrow.muted{color:var(--faint)}
+.display{font-weight:700;letter-spacing:-.035em;line-height:.98;font-size:clamp(38px,7.4vw,84px);text-wrap:balance}
+.h2{font-weight:650;letter-spacing:-.02em;font-size:clamp(22px,3vw,30px);line-height:1.12;text-wrap:balance}
+.lede{color:var(--muted);font-size:clamp(16px,1.9vw,19px);max-width:46ch}
+.fine{font-size:11.5px;color:var(--faint);letter-spacing:.02em}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--mono)}
+
+/* ---------- buttons ---------- */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 26px;border-radius:999px;
+  font-size:11.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;white-space:nowrap;
+  transition:transform .3s var(--ease),box-shadow .35s var(--ease),border-color .3s,background .3s,color .3s,opacity .3s}
+.btn-red{background:linear-gradient(180deg,var(--red-hi),var(--red));color:var(--ivory);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 10px 30px -12px rgba(181,33,40,.75)}
+.btn-red:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 0 0 4px rgba(181,33,40,.16),0 14px 34px -12px rgba(181,33,40,.9)}
+.btn-line{border:1px solid var(--line-2);color:var(--ivory)}
+.btn-line:hover{border-color:rgba(181,33,40,.75);box-shadow:0 0 0 4px rgba(181,33,40,.10)}
+.btn-danger{border:1px solid rgba(181,33,40,.6);color:#f0b9bb}
+.btn-danger:hover{background:rgba(181,33,40,.16)}
+.btn-sm{min-height:36px;padding:0 16px;font-size:10.5px;letter-spacing:.2em}
+.btn[disabled]{opacity:.35;pointer-events:none}
+.link{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--line-2);transition:color .25s,border-color .25s}
+.link:hover{color:var(--ivory);border-color:var(--red-hi)}
+.arrow::after{content:"→";margin-left:10px;letter-spacing:0;display:inline-block;transition:transform .3s var(--ease)}
+.arrow:hover::after{transform:translateX(4px)}
+
+/* ---------- the invitation stage ---------- */
+.stage{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:24px 16px;overflow:hidden}
+.gate-inner,.reveal-inner{display:flex;flex-direction:column;align-items:center;text-align:center}
+.env-wrap{position:relative;perspective:900px}
+.envelope{--w:min(56vw,226px,33dvh);position:relative;width:var(--w);aspect-ratio:.68;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;
+  filter:drop-shadow(0 40px 50px rgba(0,0,0,.65)) drop-shadow(0 0 70px rgba(143,23,29,.28));transition:filter .6s}
+.envelope.ready{filter:drop-shadow(0 40px 50px rgba(0,0,0,.65)) drop-shadow(0 0 90px rgba(181,33,40,.45))}
+.env-back{position:absolute;inset:0;border-radius:12px;background:linear-gradient(170deg,#6f1116,#4a0b0e)}
+.env-light{position:absolute;left:50%;top:0;width:240%;aspect-ratio:1;transform:translate(-50%,-50%) scale(.3);opacity:0;pointer-events:none;z-index:2;mix-blend-mode:screen;
+  background:radial-gradient(circle,rgba(255,231,176,.95) 0%,rgba(222,190,120,.55) 16%,rgba(199,164,91,.18) 36%,transparent 62%)}
+.env-card{position:absolute;left:9%;right:9%;top:5%;height:80%;border-radius:7px;z-index:3;display:grid;justify-items:center;align-content:start;gap:8%;padding-top:13%;
+  background:linear-gradient(180deg,#F8F4EB,#E7E0D1);box-shadow:0 -8px 24px rgba(0,0,0,.25)}
+.env-card svg{width:46%}
+.env-card span{font-size:calc(var(--w)*.034);letter-spacing:.3em;color:#7a1318;font-weight:700}
+.env-front{position:absolute;inset:0;border-radius:12px;z-index:4;overflow:hidden;
+  background:
+   linear-gradient(115deg,transparent 30%,rgba(255,255,255,.07) 46%,transparent 60%),
+   linear-gradient(168deg,#C42830 0%,#A91F26 40%,#8F171D 100%)}
+.env-front::before{content:"";position:absolute;inset:7%;border:1px solid rgba(199,164,91,.42);border-radius:6px}
+.env-front::after{content:"";position:absolute;left:50%;bottom:10%;width:30%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;border:1px solid rgba(199,164,91,.30);
+  box-shadow:inset 0 0 0 6px rgba(143,23,29,.0),inset 0 0 0 7px rgba(199,164,91,.16)}
+.env-flap{position:absolute;left:0;right:0;top:0;height:37%;z-index:5;transform-origin:50% 0;transform:perspective(800px) rotateX(0deg)}
+.env-flap svg{display:block;width:100%;height:100%;overflow:visible}
+.seal{position:absolute;left:50%;top:28.5%;width:25%;aspect-ratio:1;transform:translate(-50%,-50%);z-index:6;pointer-events:none}
+.seal-half{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 34% 28%,#EBCF92,#C7A45B 46%,#94733A 100%);
+  box-shadow:0 3px 8px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,240,205,.4)}
+.seal-half::after{content:"";position:absolute;inset:11%;border-radius:50%;border:1px solid rgba(110,16,20,.45)}
+.seal-half b{font-family:var(--han);font-weight:600;color:#7a1318;font-size:calc(var(--w)*.12);line-height:1;transform:translateY(-3%)}
+.seal-l{clip-path:inset(0 50% 0 0)} .seal-r{clip-path:inset(0 0 0 50%)}
+.envelope.ready .seal-half{animation:sealGlow 2.6s ease-in-out infinite}
+@keyframes sealGlow{50%{box-shadow:0 3px 8px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,240,205,.5),0 0 22px rgba(232,200,130,.55)}}
+.gate-label{margin-top:clamp(28px,5dvh,44px)}
+.gate-date{margin-top:10px;font-size:clamp(22px,4.4vw,30px);font-weight:600;letter-spacing:.2em;padding-left:.2em}
+.gate-action{margin-top:clamp(22px,4dvh,34px);min-height:104px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.gate-welcome{font-size:11px;letter-spacing:.3em;color:var(--muted);font-weight:600}
+.btn-open{min-width:168px}
+.gate-note{max-width:34ch;color:var(--muted);font-size:13.5px}
+.gsi-slot{min-height:44px;display:grid;place-items:center}
+.particle{position:absolute;width:4px;height:4px;border-radius:50%;background:#F0D9A0;box-shadow:0 0 8px 2px rgba(232,200,130,.6);pointer-events:none;z-index:30}
+.bloom{position:fixed;inset:0;pointer-events:none;z-index:25;opacity:0;background:radial-gradient(circle at 50% 42%,rgba(232,200,130,.45),rgba(143,23,29,.18) 38%,transparent 70%)}
+
+/* reveal */
+.emblem-hero{width:min(64vw,290px,34dvh);overflow:visible}
+.reveal-name{margin-top:clamp(18px,3dvh,30px);font-size:clamp(30px,6.4vw,64px);font-weight:750;letter-spacing:-.035em;line-height:1;max-width:15ch;text-wrap:balance}
+.reveal-date{margin-top:16px;color:var(--gold);letter-spacing:.34em;font-size:12px;font-weight:600;padding-left:.34em}
+.reveal-sub{margin-top:10px;letter-spacing:.42em;font-size:10.5px;color:var(--muted);padding-left:.42em}
+.btn-enter{margin-top:clamp(24px,4dvh,38px);border:1px solid rgba(242,239,232,.32);min-height:52px;padding:0 34px}
+.btn-enter::before,.btn-enter::after{content:"";position:absolute;width:9px;height:9px;border-color:var(--gold);border-style:solid;opacity:0;transition:opacity .35s,transform .35s var(--ease)}
+.btn-enter::before{left:-5px;top:-5px;border-width:1px 0 0 1px;transform:translate(3px,3px)}
+.btn-enter::after{right:-5px;bottom:-5px;border-width:0 1px 1px 0;transform:translate(-3px,-3px)}
+.btn-enter:hover{transform:scale(1.035);border-color:rgba(181,33,40,.9);box-shadow:0 0 0 1px rgba(181,33,40,.35),0 0 34px -6px rgba(181,33,40,.7)}
+.btn-enter:hover::before,.btn-enter:hover::after{opacity:1;transform:none}
+.skip{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;font-size:10.5px;letter-spacing:.24em;color:var(--faint);padding:10px}
+.skip:hover{color:var(--ivory)}
+
+/* ---------- app shell ---------- */
+#app{position:relative;z-index:5;min-height:100dvh}
+.wrap{width:100%;max-width:1180px;margin-inline:auto;padding-inline:clamp(16px,4vw,40px)}
+.topbar{position:sticky;top:0;z-index:50;padding-top:env(safe-area-inset-top,0px);background:linear-gradient(180deg,rgba(11,11,11,.92),rgba(11,11,11,.78));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-in{height:var(--bar-h);display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:700;letter-spacing:.26em;margin-right:auto;min-width:0}
+.brand svg{width:30px;height:30px;flex:none}
+.brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav{display:flex;gap:30px}
+.nav a{position:relative;font-size:11px;font-weight:600;letter-spacing:.26em;color:var(--faint);padding:10px 0;transition:color .25s}
+.nav a:hover{color:var(--ivory)}
+.nav a.on{color:var(--ivory)}
+.nav a.on::after{content:"";position:absolute;left:50%;bottom:0;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--red-hi);box-shadow:0 0 8px var(--red-hi)}
+.user{position:relative}
+.chip{display:flex;align-items:center;gap:10px;padding:4px 12px 4px 4px;border:1px solid var(--line-2);border-radius:999px;font-size:11px;letter-spacing:.18em;font-weight:600;transition:border-color .25s}
+.chip:hover{border-color:var(--ghost)}
+.avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(160deg,var(--red-hi),var(--red));font-size:12px;font-weight:700;letter-spacing:0;overflow:hidden;flex:none}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.menu{position:absolute;right:0;top:calc(100% + 10px);min-width:220px;padding:8px;background:rgba(20,20,20,.97);border:1px solid var(--line-2);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.6);transform-origin:top right}
+.menu button,.menu a{display:flex;width:100%;align-items:center;justify-content:space-between;padding:12px 12px;border-radius:10px;font-size:11px;letter-spacing:.22em;font-weight:600;color:var(--muted);text-align:left}
+.menu button:hover,.menu a:hover{background:var(--char-3);color:var(--ivory)}
+.menu hr{border:0;border-top:1px solid var(--line);margin:6px 4px}
+.preview-flag{font-size:9.5px;letter-spacing:.24em;color:var(--gold);border:1px solid rgba(199,164,91,.35);border-radius:999px;padding:4px 10px;white-space:nowrap}
+
+.tabbar{display:none}
+main{position:relative;padding-block:clamp(36px,7vw,84px) 120px;overflow-x:clip;overflow-clip-margin:8px}
+.page{display:flex;flex-direction:column;gap:clamp(40px,6vw,72px)}
+
+/* ---------- home ---------- */
+.hero{display:flex;flex-direction:column;gap:18px}
+.hero .lede{font-size:clamp(18px,2.4vw,24px);color:var(--muted);letter-spacing:-.01em}
+.date-pill{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.28em;color:var(--ivory);padding:9px 16px;border:1px solid var(--line-2);border-radius:999px}
+.date-pill i{width:6px;height:6px;border-radius:50%;background:var(--red-hi);box-shadow:0 0 10px var(--red-hi)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.scard{position:relative;display:flex;flex-direction:column;gap:6px;min-height:200px;padding:26px 24px 22px;border-radius:20px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(28,28,28,.9),rgba(16,16,16,.9));transition:border-color .3s,transform .35s var(--ease)}
+a.scard:hover{border-color:var(--line-2);transform:translateY(-2px)}
+.scard .k{font-size:10.5px;letter-spacing:.3em;font-weight:600;color:var(--faint);margin-bottom:auto}
+.scard .v{font-size:clamp(26px,3vw,34px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.scard .v2{font-size:15px;color:var(--muted)}
+.scard .cta{margin-top:14px;font-size:10.5px;letter-spacing:.24em;font-weight:600;color:var(--red-hi)}
+.scard.done::after{content:"";position:absolute;right:22px;top:24px;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px rgba(199,164,91,.7)}
+.scard .v.dim{color:var(--faint)}
+.notes{display:flex;flex-direction:column;gap:clamp(48px,7vw,88px);padding-top:clamp(24px,4vw,40px);border-top:1px solid var(--line)}
+.note{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:24px 48px}
+.note p.body{font-size:clamp(21px,2.7vw,32px);line-height:1.32;letter-spacing:-.018em;font-weight:400;white-space:pre-line;max-width:30ch;color:var(--ivory)}
+.note .sig{margin-top:22px;font-size:11px;letter-spacing:.3em;color:var(--faint)}
+
+/* ---------- seating ---------- */
+.shead{display:flex;flex-direction:column;gap:14px}
+.count{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 16px}
+.count .big{font-weight:750;letter-spacing:-.045em;font-size:clamp(56px,10vw,112px);line-height:.9;font-variant-numeric:tabular-nums}
+.count .big .of{color:var(--faint);font-weight:300}
+.count .unit{font-size:11px;letter-spacing:.32em;color:var(--muted);font-weight:600}
+.live{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--faint);min-height:20px}
+.live i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--red-hi);animation:pulse 2s infinite}
+.live b{color:var(--muted);font-weight:500}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(181,33,40,.7)}70%{box-shadow:0 0 0 8px rgba(181,33,40,0)}100%{box-shadow:0 0 0 0 rgba(181,33,40,0)}}
+.mine-bar{display:flex;align-items:center;flex-wrap:wrap;gap:16px 28px;padding:22px 24px;border-radius:20px;border:1px solid rgba(181,33,40,.32);
+  background:linear-gradient(100deg,rgba(143,23,29,.22),rgba(18,18,18,.6) 55%)}
+.mine-bar .seal-mini{width:46px;height:46px;flex:none;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#d33a41,var(--red) 70%);box-shadow:0 0 0 1px rgba(199,164,91,.5),0 0 24px rgba(181,33,40,.45);font-size:10px;font-weight:700;letter-spacing:.12em}
+.mine-bar .what{display:flex;flex-direction:column;gap:2px;margin-right:auto;min-width:0}
+.mine-bar .what .k{font-size:10.5px;letter-spacing:.3em;color:var(--faint);font-weight:600}
+.mine-bar .what .v{font-size:clamp(20px,2.6vw,26px);font-weight:700;letter-spacing:-.02em}
+.mine-bar .acts{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.mine-bar.empty{border-color:var(--line);background:linear-gradient(100deg,rgba(28,28,28,.8),rgba(18,18,18,.5))}
+.mine-bar.empty .seal-mini{background:transparent;box-shadow:inset 0 0 0 1px var(--line-2);color:var(--faint)}
+.banner{padding:14px 18px;border-radius:14px;border:1px solid rgba(199,164,91,.3);color:var(--gold);font-size:13px;background:rgba(199,164,91,.05)}
+
+.tables{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:clamp(28px,4vw,40px) clamp(18px,3vw,30px)}
+.tcard{display:flex;flex-direction:column;gap:12px;min-width:0}
+.thead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-inline:4px}
+.thead h2{font-size:12px;letter-spacing:.3em;font-weight:700}
+.thead p{font-size:11px;letter-spacing:.2em;color:var(--faint);font-variant-numeric:tabular-nums}
+.thead p b{color:var(--ivory);font-weight:600}
+.thead .tag{font-size:9.5px;letter-spacing:.24em;padding:3px 8px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted);margin-left:8px}
+.tstage{position:relative;width:100%;max-width:520px;margin-inline:auto;aspect-ratio:160/100;container-type:inline-size}
+.tsurface{position:absolute;left:18.75%;top:26%;width:62.5%;height:48%;border-radius:22% / 46%;
+  background:radial-gradient(120% 140% at 30% 20%,#262626,#151515 55%,#0f0f0f);
+  box-shadow:0 0 0 1px rgba(242,239,232,.10),0 26px 50px -18px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.06),inset 0 -14px 30px rgba(0,0,0,.5)}
+.tsurface::before{content:"";position:absolute;inset:6%;border-radius:inherit;border:1px solid rgba(199,164,91,.22)}
+.tsurface .ring{position:absolute;left:50%;top:50%;width:36%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(181,33,40,.32);display:grid;place-items:center}
+.tsurface .han{font-family:var(--han);font-size:clamp(20px,7.5cqw,40px);color:rgba(242,239,232,.07);line-height:1}
+.tsurface .tl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;pointer-events:none}
+.tsurface .tl span{font-size:clamp(8px,2.4cqw,10.5px);letter-spacing:.3em;color:var(--faint);font-weight:600;padding-left:.3em}
+.tsurface .tl b{font-size:clamp(12px,3.6cqw,16px);font-weight:600;font-variant-numeric:tabular-nums;color:var(--muted)}
+.tcard.closed .tsurface{opacity:.45}
+.tcard.closed .seat{opacity:.4}
+
+.seat{--s:clamp(42px,12.6cqw,52px);position:absolute;width:var(--s);height:var(--s);margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);border-radius:50%;
+  display:grid;place-items:center;font-size:10.5px;font-weight:600;letter-spacing:.06em;font-variant-numeric:tabular-nums;
+  background:rgba(11,11,11,.92);color:rgba(242,239,232,.8);box-shadow:inset 0 0 0 1px rgba(242,239,232,.45);
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .3s,color .3s}
+.seat::after{content:attr(data-label);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translate(-50%,4px);white-space:nowrap;
+  font-size:9.5px;letter-spacing:.22em;font-weight:600;padding:6px 9px;border-radius:999px;background:rgba(22,22,22,.96);border:1px solid var(--line-2);color:var(--ivory);
+  opacity:0;pointer-events:none;transition:opacity .2s,transform .25s var(--ease);z-index:3}
+.seat:hover::after,.seat:focus-visible::after{opacity:1;transform:translate(-50%,0)}
+.seat.tl::after{left:0;transform:translate(0,4px)} .seat.tl:hover::after,.seat.tl:focus-visible::after{transform:translate(0,0)}
+.seat.tr::after{left:auto;right:0;transform:translate(0,4px)} .seat.tr:hover::after,.seat.tr:focus-visible::after{transform:translate(0,0)}
+.seat.open:hover,.seat.open:focus-visible,.seat.pending{transform:scale(1.14);color:var(--ivory);box-shadow:inset 0 0 0 1px rgba(181,33,40,.95),0 0 0 4px rgba(181,33,40,.16),0 0 22px rgba(181,33,40,.55);z-index:2}
+.seat.pending{box-shadow:inset 0 0 0 1.5px var(--gold),0 0 0 4px rgba(199,164,91,.16),0 0 22px rgba(199,164,91,.4)}
+.seat.taken{background:linear-gradient(160deg,#222,#181818);color:rgba(242,239,232,.28);box-shadow:none;cursor:default;font-size:11px;letter-spacing:.02em}
+.seat.mine{background:radial-gradient(circle at 35% 30%,#d6363e,var(--red) 72%);color:var(--ivory);font-weight:700;font-size:10.5px;letter-spacing:.14em;
+  box-shadow:0 0 0 1.5px var(--gold),0 0 26px rgba(181,33,40,.6);z-index:2}
+.seat.mine::before{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(199,164,91,.45);animation:ring 2.8s ease-out infinite}
+@keyframes ring{0%{transform:scale(.85);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+.seat.flash{animation:flash 1.2s var(--ease)}
+@keyframes flash{0%{box-shadow:inset 0 0 0 1px var(--red-hi),0 0 0 0 rgba(181,33,40,.8)}40%{box-shadow:inset 0 0 0 1px var(--red-hi),0 0 0 12px rgba(181,33,40,0)}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:10px;letter-spacing:.24em;color:var(--faint);font-weight:600}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:12px;height:12px;border-radius:50%}
+.legend .lo{box-shadow:inset 0 0 0 1px rgba(242,239,232,.45)} .legend .lt{background:#222} .legend .lm{background:var(--red-hi);box-shadow:0 0 0 1px var(--gold)}
+.tables.choosing .seat.open{color:var(--muted);box-shadow:inset 0 0 0 1px rgba(181,33,40,.55)}
+
+.sticky-seat{display:none}
+
+/* ---------- potluck ---------- */
+.contrib{display:flex;align-items:center;flex-wrap:wrap;gap:16px 28px;padding:22px 24px;border-radius:20px;border:1px solid rgba(199,164,91,.28);
+  background:linear-gradient(100deg,rgba(199,164,91,.09),rgba(18,18,18,.6) 55%)}
+.contrib.empty{border-color:var(--line);background:linear-gradient(100deg,rgba(28,28,28,.8),rgba(18,18,18,.5))}
+.contrib .what{display:flex;flex-direction:column;gap:2px;margin-right:auto;min-width:0}
+.contrib .k{font-size:10.5px;letter-spacing:.3em;color:var(--faint);font-weight:600}
+.contrib .v{font-size:clamp(20px,2.6vw,26px);font-weight:700;letter-spacing:-.02em}
+.contrib .s{font-size:13px;color:var(--muted)}
+.pcat{display:flex;flex-direction:column;gap:18px}
+.pcat-head{display:flex;align-items:baseline;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.pcat-head h2{font-size:12px;letter-spacing:.34em;font-weight:700}
+.pcat-head span{font-size:11px;color:var(--faint);letter-spacing:.1em}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:12px}
+.pitem{display:flex;flex-direction:column;gap:12px;padding:22px 20px 18px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(26,26,26,.85),rgba(15,15,15,.85));transition:border-color .3s}
+.pitem:hover{border-color:var(--line-2)}
+.pitem.mine{border-color:rgba(199,164,91,.5);background:linear-gradient(180deg,rgba(199,164,91,.10),rgba(15,15,15,.85))}
+.pitem.full:not(.mine){opacity:.55}
+.pitem .top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.pitem h3{font-size:19px;font-weight:650;letter-spacing:-.015em;line-height:1.15}
+.pitem .desc{font-size:13px;color:var(--faint);margin-top:-6px}
+.pitem .rec{font-size:10px;letter-spacing:.24em;color:var(--muted);font-weight:600}
+.status{font-size:9.5px;letter-spacing:.22em;font-weight:700;white-space:nowrap;padding-top:4px}
+.status.needed{color:#e2676d}
+.status.more{color:var(--gold)}
+.status.covered{color:var(--muted)}
+.status.full{color:var(--faint)}
+.meter{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.meter i{height:2px;border-radius:2px;background:rgba(242,239,232,.10)}
+.meter i.on{background:var(--ivory)}
+.pitem.needy .meter i.on{background:#e2676d}
+.pitem .who{font-size:12.5px;color:var(--faint);min-height:19px}
+.pitem .who b{color:var(--muted);font-weight:500}
+.pitem .btn{align-self:stretch}
+.pitem.mine .btn{border-color:rgba(199,164,91,.45);color:var(--gold)}
+.ledger{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:0 32px}
+.ledger div{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.ledger div span:last-child{color:var(--faint)}
+
+/* ---------- review ---------- */
+.ticket{border:1px solid var(--line-2);border-radius:24px;background:linear-gradient(180deg,rgba(24,24,24,.9),rgba(14,14,14,.9));overflow:hidden;max-width:760px}
+.trow{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr) auto;align-items:center;gap:12px 24px;padding:26px 28px;border-bottom:1px dashed var(--line-2)}
+.trow:last-child{border-bottom:0}
+.trow .k{font-size:10.5px;letter-spacing:.3em;color:var(--faint);font-weight:600}
+.trow .v{font-size:clamp(20px,2.8vw,28px);font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.trow .v small{display:block;font-size:13px;font-weight:500;letter-spacing:0;color:var(--muted);margin-top:4px}
+.trow .v.dim{color:var(--faint)}
+.review-acts{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+
+/* ---------- info ---------- */
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.facts div{padding:22px 24px 22px 0;display:flex;flex-direction:column;gap:6px;min-width:0}
+.facts div+div{padding-left:24px;border-left:1px solid var(--line)}
+.facts .k{font-size:10.5px;letter-spacing:.3em;color:var(--faint);font-weight:600}
+.facts .v{font-size:17px;font-weight:600;overflow-wrap:anywhere}
+.faq{border-top:1px solid var(--line);max-width:860px}
+.qa{border-bottom:1px solid var(--line)}
+.qa button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 0;text-align:left;font-size:13px;font-weight:600;letter-spacing:.16em;line-height:1.4}
+.qa button:hover{color:var(--ivory)}
+.qa .pm{position:relative;width:14px;height:14px;flex:none}
+.qa .pm::before,.qa .pm::after{content:"";position:absolute;left:0;top:6.5px;width:14px;height:1px;background:var(--muted);transition:transform .35s var(--ease),background .3s}
+.qa .pm::after{transform:rotate(90deg)}
+.qa.open .pm::after{transform:rotate(0)}
+.qa.open .pm::before{background:var(--red-hi)}
+.qa .ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease)}
+.qa.open .ans{grid-template-rows:1fr}
+.qa .ans>div{overflow:hidden}
+.qa .ans p{padding:0 0 24px;color:var(--muted);font-size:15.5px;max-width:62ch;white-space:pre-line}
+
+/* ---------- panel, toasts, loaders ---------- */
+.scrim{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.panel{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:310;width:min(440px,calc(100% - 32px));max-height:calc(100dvh - 40px);overflow:auto;
+  padding:30px 26px 24px;border-radius:24px;background:linear-gradient(180deg,#191919,#101010);border:1px solid var(--line-2);box-shadow:0 30px 90px rgba(0,0,0,.7)}
+.panel::before{content:"";position:absolute;left:26px;right:26px;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--red-hi),transparent)}
+.panel h3{margin-top:12px;font-size:clamp(24px,5vw,30px);font-weight:700;letter-spacing:-.025em;line-height:1.1;text-wrap:balance}
+.panel .pb{margin-top:10px;color:var(--muted);font-size:14.5px}
+.panel .pacts{margin-top:26px;display:flex;flex-direction:column;gap:10px}
+.panel .pacts .btn{width:100%}
+.panel .busy,.panel .done{min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center}
+.panel .done h3{margin:0}
+.panel .field{margin-top:18px}
+.toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:500;display:flex;flex-direction:column;align-items:center;gap:8px;width:max-content;max-width:calc(100% - 32px);pointer-events:none}
+.toast{display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:999px;background:rgba(22,22,22,.96);border:1px solid var(--line-2);font-size:13.5px;box-shadow:0 16px 40px rgba(0,0,0,.5);pointer-events:auto}
+.toast i{width:6px;height:6px;border-radius:50%;flex:none;background:var(--muted)}
+.toast.error{border-color:rgba(181,33,40,.6)} .toast.error i{background:var(--red-hi);box-shadow:0 0 8px var(--red-hi)}
+.toast.ok i{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.loader{display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px 0}
+.loader .ld{display:flex;gap:7px}
+.loader .ld span{width:13px;height:13px;border-radius:3.5px;background:var(--ivory);position:relative;animation:tumble 1s var(--ease) infinite}
+.loader .ld span:nth-child(2){animation-delay:.12s;background:#e7e1d4}
+.loader .ld span:nth-child(3){animation-delay:.24s}
+.loader .ld span::after{content:"";position:absolute;left:50%;top:50%;width:3px;height:3px;margin:-1.5px;border-radius:50%;background:var(--red-hi)}
+.loader p{font-size:10.5px;letter-spacing:.3em;color:var(--muted);font-weight:600}
+@keyframes tumble{0%{transform:translateY(0) rotate(0)}35%{transform:translateY(-9px) rotate(90deg)}65%{transform:translateY(0) rotate(180deg)}80%{transform:translateY(-2px) rotate(180deg)}100%{transform:translateY(0) rotate(180deg)}}
+
+.die{--d:30px;display:inline-grid;grid-template:repeat(3,1fr)/repeat(3,1fr);width:var(--d);height:var(--d);padding:15%;border-radius:22%;
+  background:linear-gradient(145deg,#FCF9F2,#DAD2C1);box-shadow:inset 0 -2px 0 rgba(0,0,0,.16),inset 0 1px 0 #fff,0 8px 18px rgba(0,0,0,.5)}
+.die i{border-radius:50%;margin:14%}
+.die i.on{background:#161616}
+.die.red i.on{background:var(--red-hi)}
+
+/* completion */
+.complete{position:fixed;inset:0;z-index:600;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:24px 16px}
+.complete::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 400px at 50% 40%,rgba(143,23,29,.22),transparent 70%)}
+.cx-stage{position:relative;width:220px;height:140px;display:grid;place-items:center}
+.cx-dice{display:flex;gap:14px}
+.cx-dice .die{--d:44px}
+.cx-flash{position:absolute;left:50%;top:50%;width:260px;height:260px;margin:-130px;border-radius:50%;opacity:0;background:radial-gradient(circle,rgba(248,226,170,.9),rgba(199,164,91,.3) 35%,transparent 65%)}
+.cx-check{position:absolute;width:76px;height:76px;opacity:0}
+.cx-check circle{fill:none;stroke:var(--gold);stroke-width:1.2;stroke-dasharray:151;stroke-dashoffset:151}
+.cx-check path{fill:none;stroke:var(--ivory);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40}
+.cx-title{position:relative;font-size:clamp(30px,6.4vw,62px);font-weight:750;letter-spacing:-.035em;line-height:1;opacity:0}
+.cx-sub{position:relative;font-size:12px;letter-spacing:.32em;color:var(--gold);font-weight:600;opacity:0}
+.cx-back{position:relative;margin-top:24px;opacity:0}
+
+/* ---------- admin ---------- */
+.adm-tabs{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:6px;border:1px solid var(--line);border-radius:999px;align-self:flex-start;max-width:100%}
+.adm-tabs::-webkit-scrollbar{display:none}
+.adm-tabs button{flex:none}
+.adm-tabs button{padding:10px 16px;border-radius:999px;font-size:10.5px;letter-spacing:.22em;font-weight:600;color:var(--faint);transition:background .25s,color .25s}
+.adm-tabs button:hover{color:var(--ivory)}
+.adm-tabs button.on{background:var(--char-3);color:var(--ivory);box-shadow:inset 0 0 0 1px var(--line-2)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat{padding:22px 20px;border-radius:18px;border:1px solid var(--line);background:rgba(20,20,20,.7);display:flex;flex-direction:column;gap:8px}
+.stat .k{font-size:10px;letter-spacing:.28em;color:var(--faint);font-weight:600}
+.stat .v{font-size:clamp(30px,4vw,44px);font-weight:750;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.stat .v span{color:var(--faint);font-weight:300}
+.stat .s{font-size:12.5px;color:var(--faint)}
+.block{display:flex;flex-direction:column;gap:14px}
+.block-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.block-head h2{font-size:12px;letter-spacing:.3em;font-weight:700}
+.rows{border-top:1px solid var(--line)}
+.row{display:flex;align-items:center;gap:12px 18px;flex-wrap:wrap;padding:13px 0;border-bottom:1px solid var(--line);font-size:14px;min-width:0}
+.row .n{width:74px;flex:none;font-size:10.5px;letter-spacing:.2em;color:var(--faint);font-weight:600;font-variant-numeric:tabular-nums}
+.row .who{flex:1 1 140px;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.row .who.dim{color:var(--faint);font-size:11px;letter-spacing:.2em}
+.row .who small{color:var(--faint);margin-left:8px}
+.row .acts{display:flex;gap:8px;margin-left:auto}
+.mini-btn{font-size:10px;letter-spacing:.2em;font-weight:600;padding:8px 12px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted);transition:border-color .2s,color .2s}
+.mini-btn:hover{border-color:var(--red-hi);color:var(--ivory)}
+.mini-btn.danger:hover{background:rgba(181,33,40,.16)}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:12px}
+.form-grid .wide{grid-column:1/-1}
+.fl{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fl label{font-size:9.5px;letter-spacing:.24em;color:var(--faint);font-weight:600}
+.field{width:100%;min-height:42px;padding:10px 12px;border-radius:10px;border:1px solid var(--line-2);background:#0e0e0e;font-size:14px;transition:border-color .2s}
+.field:focus{outline:0;border-color:rgba(199,164,91,.7)}
+textarea.field{min-height:110px;resize:vertical;line-height:1.5}
+select.field{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 18px,calc(100% - 13px) 18px;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
+.switch{display:inline-flex;align-items:center;gap:10px;font-size:10.5px;letter-spacing:.2em;color:var(--muted);font-weight:600;cursor:pointer;min-height:42px}
+.switch input{appearance:none;width:38px;height:22px;border-radius:999px;background:#2a2a2a;position:relative;cursor:pointer;transition:background .25s;flex:none}
+.switch input::after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:var(--ivory);transition:transform .25s var(--ease)}
+.switch input:checked{background:var(--red-hi)}
+.switch input:checked::after{transform:translateX(16px)}
+.edit-card{padding:20px;border-radius:18px;border:1px solid var(--line);background:rgba(18,18,18,.7);display:flex;flex-direction:column;gap:14px}
+.edit-card .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.stepper{display:flex;align-items:center;border:1px solid var(--line-2);border-radius:10px;overflow:hidden;min-height:42px}
+.stepper button{width:40px;align-self:stretch;font-size:18px;color:var(--muted)}
+.stepper button:hover{background:var(--char-3);color:var(--ivory)}
+.stepper input{width:100%;min-width:0;text-align:center;border:0;background:transparent;font-variant-numeric:tabular-nums;font-size:15px}
+.stepper input:focus{outline:0}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px}
+table.ppl{width:100%;border-collapse:collapse;font-size:13.5px;min-width:720px}
+table.ppl th{font-size:9.5px;letter-spacing:.22em;color:var(--faint);font-weight:600;text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.ppl td{padding:12px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.ppl tr:last-child td{border-bottom:0}
+table.ppl td.dim{color:var(--faint)}
+.dot-ok{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.csv{width:100%;min-height:220px;font-family:var(--mono);font-size:12px;white-space:pre}
+.export-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .cards{grid-template-columns:1fr}
+  .scard{min-height:0}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .note{grid-template-columns:1fr;gap:16px}
+}
+@media (max-width:760px){
+  .nav{display:none}
+  .chip .nm{display:none}
+  .chip{padding:3px;border-color:transparent}
+  main{padding-bottom:calc(var(--tab-h) + 96px + env(safe-area-inset-bottom,0px))}
+  .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:60;padding-bottom:env(safe-area-inset-bottom,0px);
+    background:rgba(11,11,11,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+  .tabbar a{height:var(--tab-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;font-size:9.5px;letter-spacing:.2em;font-weight:600;color:var(--faint)}
+  .tabbar a::before{content:"";width:4px;height:4px;border-radius:50%;background:transparent}
+  .tabbar a.on{color:var(--ivory)}
+  .tabbar a.on::before{background:var(--red-hi);box-shadow:0 0 8px var(--red-hi)}
+  .sticky-seat{display:flex;position:fixed;left:12px;right:12px;bottom:calc(var(--tab-h) + 10px + env(safe-area-inset-bottom,0px));z-index:55;align-items:center;justify-content:center;gap:10px;
+    padding:12px 16px;border-radius:999px;font-size:10.5px;letter-spacing:.2em;font-weight:600;background:rgba(24,24,24,.95);border:1px solid var(--line-2);box-shadow:0 12px 30px rgba(0,0,0,.55)}
+  .sticky-seat i{width:6px;height:6px;border-radius:50%;background:var(--red-hi);box-shadow:0 0 8px var(--red-hi)}
+  .sticky-seat.none i{background:var(--faint);box-shadow:none}
+  .sticky-seat b{color:var(--ivory)}
+  .toasts{bottom:calc(var(--tab-h) + 66px + env(safe-area-inset-bottom,0px))}
+  .facts{grid-template-columns:1fr}
+  .facts div,.facts div+div{padding:16px 0;border-left:0}
+  .facts div+div{border-top:1px solid var(--line)}
+  .trow{grid-template-columns:1fr;gap:8px;padding:22px 20px}
+  .trow .btn,.trow .link{justify-self:start}
+  .mine-bar,.contrib{padding:18px}
+  .mine-bar .acts,.contrib .acts{width:100%}
+  .preview-flag{display:none}
+}
+@media (min-width:761px){
+  .panel{top:50%;bottom:auto;transform:translate(-50%,-50%)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LAYER 1: THE INVITATION ============ -->
+<section class="stage" id="gate" aria-label="Private invitation">
+  <div class="gate-inner" id="gateInner">
+    <div class="env-wrap">
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Sealed invitation. Sign in to open.">
+        <div class="env-back"></div>
+        <div class="env-light" id="envLight"></div>
+        <div class="env-card" id="envCard"><svg id="cardMark" viewBox="0 0 200 200" aria-hidden="true"></svg><span>ADMIT ONE</span></div>
+        <div class="env-front"></div>
+        <div class="env-flap" id="envFlap">
+          <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="flapG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B9242B"/><stop offset="1" stop-color="#951a20"/></linearGradient></defs>
+            <path d="M0 0 H100 V13 Q50 46 0 13 Z" fill="url(#flapG)"/>
+            <path d="M0 13 Q50 46 100 13" fill="none" stroke="#C7A45B" stroke-opacity=".55" stroke-width=".8" vector-effect="non-scaling-stroke"/>
+          </svg>
+        </div>
+        <div class="seal" id="seal">
+          <div class="seal-half seal-l"><b>骰</b></div>
+          <div class="seal-half seal-r"><b>骰</b></div>
+        </div>
+      </div>
+    </div>
+    <p class="eyebrow muted gate-label">A PRIVATE INVITATION</p>
+    <p class="gate-date" id="gateDate">OCTOBER 24</p>
+    <div class="gate-action" id="gateAction" aria-live="polite"></div>
+  </div>
+</section>
+<div class="bloom" id="bloom"></div>
+
+<section class="stage" id="reveal" hidden aria-label="Event">
+  <div class="reveal-inner" id="revealInner">
+    <svg class="emblem-hero" id="heroEmblem" viewBox="0 0 200 200" role="img" aria-label="Dice bowl emblem"></svg>
+    <h1 class="reveal-name" id="revealName"></h1>
+    <p class="reveal-date" id="revealDate"></p>
+    <p class="reveal-sub" id="revealSub"></p>
+    <button class="btn btn-enter" id="enterBtn">ENTER THE GAME</button>
+  </div>
+</section>
+
+<!-- ============ LAYER 2: THE GAME ROOM ============ -->
+<div id="app" hidden>
+  <header class="topbar">
+    <div class="wrap topbar-in">
+      <a class="brand" href="#home" aria-label="Home"><svg id="navEmblem" viewBox="0 0 200 200" aria-hidden="true"></svg><span id="brandName">DICE GAME</span></a>
+      <nav class="nav" id="nav" aria-label="Main"></nav>
+      <span class="preview-flag" id="previewFlag" hidden>PREVIEW</span>
+      <div class="user">
+        <button class="chip" id="chip" aria-haspopup="menu" aria-expanded="false"><span class="avatar" id="avatar"></span><span class="nm" id="chipName"></span></button>
+        <div class="menu" id="menu" role="menu" hidden></div>
+      </div>
+    </div>
+  </header>
+  <main class="wrap" id="view"></main>
+  <nav class="tabbar" id="tabbar" aria-label="Main"></nav>
+  <div class="sticky-seat" id="sticky" hidden></div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   CONFIG — the only two values you need to fill in (see SETUP.md).
+   Leave both empty to run the built-in preview (needs demo-backend.js).
+   ===================================================================== */
+const CONFIG = {
+  API_URL: 'https://script.google.com/macros/s/AKfycbzpYmQ6vOWK-5iBJnisR7wMgnrIGBRTXV0WePQ3KnmJjMWJ9LtL3aYn8nITQRkT4l7K/exec',
+  GOOGLE_CLIENT_ID: '335421954092-6tshkigivmf9l3e84plunrsudprroo47.apps.googleusercontent.com',
+  ENVELOPE_DATE: 'OCTOBER 24',  // the only event detail shown before sign-in
+  POLL_MS: 7000,          // how often open pages check for other guests' changes
+};
+
+(() => {
+'use strict';
+const DEMO = !CONFIG.API_URL || !CONFIG.GOOGLE_CLIENT_ID;
+const SKEY = DEMO ? 'dicegame_preview_session' : 'dicegame_session';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pad2 = n => String(n).padStart(2, '0');
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+};
+function anim(el, kf, o = {}) {
+  if (!el || !el.animate) return Promise.resolve();
+  const d = RM ? Math.min(o.duration || 300, 80) : (o.duration || 300);
+  return el.animate(kf, Object.assign({ fill: 'forwards', easing: 'cubic-bezier(.2,.8,.2,1)' }, o, { duration: d, delay: RM ? 0 : (o.delay || 0) })).finished.catch(() => {});
+}
+const titleCase = s => String(s).toLowerCase().replace(/(^|\s)\S/g, c => c.toUpperCase());
+
+const S = { session: null, state: null, admin: null, route: 'home', inApp: false, sig: '', prevSeats: null, pending: null, poll: null, busy: 0,
+            ui: { openFaq: new Set([0]), adminTab: 'overview', faqDraft: null } };
+
+/* ---------------- emblem ---------------- */
+const PIP = { 1: [[0, 0]], 2: [[-1, -1], [1, 1]], 3: [[-1, -1], [0, 0], [1, 1]], 4: [[-1, -1], [1, -1], [-1, 1], [1, 1]], 5: [[-1, -1], [1, -1], [0, 0], [-1, 1], [1, 1]], 6: [[-1, -1], [-1, 0], [-1, 1], [1, -1], [1, 0], [1, 1]] };
+function emblemSVG(o = {}) {
+  const p = o.uid || 'e' + Math.random().toString(36).slice(2, 7);
+  const ring = o.ring !== false;
+  const die = (cx, cy, rot, face, k) => {
+    const red = face === 1 || face === 4;             // Chinese dice: the one and the four are red
+    const pips = PIP[face].map(([x, y]) => `<circle cx="${x * 6.6}" cy="${y * 6.6}" r="${face === 1 ? 4.6 : 2.55}" fill="${red ? '#B52128' : '#151515'}"/>`).join('');
+    return `<g class="em-drop" data-k="${k}"><g transform="translate(${cx} ${cy}) rotate(${rot})">
+      <rect x="-13" y="-10.6" width="26" height="26" rx="5.6" fill="#A79F8E"/>
+      <rect x="-13" y="-13" width="26" height="26" rx="5.6" fill="url(#${p}d)" stroke="rgba(0,0,0,.18)" stroke-width=".5"/>
+      <rect x="-10.5" y="-11.6" width="21" height="2.2" rx="1.1" fill="#fff" opacity=".55"/>${pips}</g></g>`;
+  };
+  return `<defs>
+    <linearGradient id="${p}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9262E"/><stop offset=".55" stop-color="#8F171D"/><stop offset="1" stop-color="#560C10"/></linearGradient>
+    <linearGradient id="${p}s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".26" stop-color="#fff" stop-opacity=".22"/><stop offset=".4" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <radialGradient id="${p}i" cx=".5" cy=".3" r=".75"><stop offset="0" stop-color="#2b2b2b"/><stop offset="1" stop-color="#090909"/></radialGradient>
+    <linearGradient id="${p}d" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FDFAF3"/><stop offset="1" stop-color="#DCD4C3"/></linearGradient>
+  </defs>
+  ${ring ? `<circle class="em-ring" cx="100" cy="100" r="95" fill="none" stroke="#C7A45B" stroke-opacity=".6" stroke-width="1"/>
+  <circle class="em-ring2" cx="100" cy="100" r="89.5" fill="none" stroke="#C7A45B" stroke-opacity=".2" stroke-width=".6"/>` : ''}
+  <g class="em-bowl">
+    <path d="M80 158 h40 l-3.5 10 h-33 z" fill="#4e0b0e" stroke="#C7A45B" stroke-opacity=".55" stroke-width=".8"/>
+    <ellipse cx="100" cy="108" rx="64" ry="14" fill="url(#${p}i)"/>
+    <path d="M36 108 A64 14 0 0 1 164 108" fill="none" stroke="#C7A45B" stroke-opacity=".5" stroke-width="1.2"/>
+    <ellipse cx="73" cy="117" rx="15" ry="3.4" fill="#000" opacity=".5"/><ellipse cx="128" cy="117" rx="15" ry="3.4" fill="#000" opacity=".5"/><ellipse cx="101" cy="111" rx="14" ry="3" fill="#000" opacity=".45"/>
+  </g>
+  <g class="em-dice">${die(101, 102, 7, 5, 1)}${die(72, 110, -15, 4, 0)}${die(128, 110, 17, 6, 2)}</g>
+  <g class="em-front">
+    <path d="M36 108 A64 14 0 0 0 164 108 C162 138 138 160 100 160 C62 160 38 138 36 108 Z" fill="url(#${p}b)"/>
+    <path d="M36 108 A64 14 0 0 0 164 108 C162 138 138 160 100 160 C62 160 38 138 36 108 Z" fill="url(#${p}s)"/>
+    <path d="M43 127 C66 140 134 140 157 127" fill="none" stroke="#C7A45B" stroke-opacity=".5" stroke-width=".8"/>
+    <path d="M47 133 C70 145 130 145 153 133" fill="none" stroke="#C7A45B" stroke-opacity=".22" stroke-width=".6"/>
+    <path d="M36 108 A64 14 0 0 0 164 108" fill="none" stroke="#C7A45B" stroke-width="1.6"/>
+  </g>`;
+}
+function emblemFile(ring = true) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">${emblemSVG({ uid: 'm', ring })}</svg>`;
+}
+window.DiceEmblem = emblemFile;
+
+/* ---------------- api ---------------- */
+let backend = null;
+async function ensureBackend() {
+  if (!DEMO) return true;
+  if (window.DiceDemoBackend) { backend = window.DiceDemoBackend; return true; }
+  try {
+    await new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'demo-backend.js'; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+  } catch (e) { return false; }
+  backend = window.DiceDemoBackend || null;
+  return !!backend;
+}
+async function api(action, payload = {}) {
+  const body = Object.assign({ action, session: S.session }, payload);
+  let res;
+  S.busy++;
+  try {
+    if (DEMO) { await wait(160 + Math.random() * 200); res = backend.handle(body); }
+    else {
+      const r = await fetch(CONFIG.API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
+      res = await r.json();
+    }
+  } catch (e) { res = { ok: false, code: 'NETWORK' }; }
+  finally { S.busy--; }
+  if (!res || typeof res !== 'object') res = { ok: false, code: 'ERROR' };
+  if (res.admin) S.admin = res.admin;
+  if (res.state) applyState(res.state);
+  if (!res.ok && action !== 'auth' && (res.code === 'AUTH' || res.code === 'NOT_INVITED') && S.inApp) signOut(true);
+  return res;
+}
+const MSG = {
+  SEAT_TAKEN: 'That seat was just taken.', FULL: 'That one just filled up.', TABLE_CLOSED: 'That table is closed right now.',
+  SEATING_LOCKED: 'Seating is locked by the host.', POTLUCK_LOCKED: 'The potluck is locked by the host.', ITEM_CLOSED: "That item isn't available anymore.",
+  NETWORK: "Couldn't reach the table. Check your connection and try again.", BUSY: 'The table is busy. Please try again.',
+  AUTH: 'Please sign in again.', FORBIDDEN: 'Only the host can do that.', INVALID: 'Something about that didn’t look right.', NOT_FOUND: 'That no longer exists.',
+};
+const msgOf = (r, fallback) => ((r.code === 'SEAT_RULE' || r.code === 'POTLUCK_RULE') && r.message) ? r.message : (MSG[r.code] || fallback || 'Something went wrong.');
+
+/* ---------------- toasts + loaders ---------------- */
+function toast(text, kind = '') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + kind;
+  t.innerHTML = `<i></i><span>${esc(text)}</span>`;
+  $('#toasts').appendChild(t);
+  anim(t, [{ opacity: 0, transform: 'translateY(10px) scale(.97)' }, { opacity: 1, transform: 'none' }], { duration: 320 });
+  setTimeout(() => anim(t, [{ opacity: 1 }, { opacity: 0, transform: 'translateY(6px)' }], { duration: 300 }).then(() => t.remove()), 3200);
+}
+const loaderHTML = text => `<div class="loader" role="status"><div class="ld"><span></span><span></span><span></span></div><p>${esc(text)}</p></div>`;
+const dieHTML = (n, d) => {
+  const on = { 1: [5], 2: [3, 7], 3: [3, 5, 7], 4: [1, 3, 7, 9], 5: [1, 3, 5, 7, 9], 6: [1, 4, 7, 3, 6, 9] }[n];
+  return `<span class="die ${n === 1 || n === 4 ? 'red' : ''}" style="${d ? `--d:${d}px` : ''}">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => `<i class="${on.includes(i) ? 'on' : ''}"></i>`).join('')}</span>`;
+};
+
+/* ---------------- confirmation panel ---------------- */
+let panelEl = null;
+function closePanel() {
+  if (!panelEl) return;
+  const { p, scrim } = panelEl; panelEl = null;
+  S.pending = null; $$('.seat.pending').forEach(s => s.classList.remove('pending'));
+  anim(scrim, [{ opacity: 1 }, { opacity: 0 }], { duration: 220 }).then(() => scrim.remove());
+  anim(p, [{ opacity: 1, translate: '0 0' }, { opacity: 0, translate: '0 12px' }], { duration: 220 }).then(() => p.remove());
+  document.removeEventListener('keydown', panelKey);
+}
+function panelKey(e) { if (e.key === 'Escape' && panelEl && !panelEl.busy) closePanel(); }
+function panel(o) {
+  closePanel();
+  const scrim = document.createElement('div'); scrim.className = 'scrim';
+  const p = document.createElement('div'); p.className = 'panel'; p.setAttribute('role', 'dialog'); p.setAttribute('aria-modal', 'true');
+  p.innerHTML = `<div class="pc"><p class="eyebrow">${o.eyebrow || ''}</p><h3>${o.title}</h3>${o.body ? `<p class="pb">${o.body}</p>` : ''}${o.html || ''}
+    <div class="pacts"><button class="btn ${o.danger ? 'btn-danger' : 'btn-red'}" data-ok>${o.confirm || 'CONFIRM'}</button><button class="btn btn-line" data-cancel>${o.cancel || 'CANCEL'}</button></div></div>`;
+  document.body.append(scrim, p);
+  panelEl = { p, scrim, busy: false };
+  anim(scrim, [{ opacity: 0 }, { opacity: 1 }], { duration: 260 });
+  anim(p, [{ opacity: 0, translate: '0 18px' }, { opacity: 1, translate: '0 0' }], { duration: 380 });
+  document.addEventListener('keydown', panelKey);
+  scrim.onclick = () => { if (!panelEl.busy) closePanel(); };
+  p.querySelector('[data-cancel]').onclick = closePanel;
+  p.querySelector('[data-ok]').focus({ preventScroll: true });
+  p.querySelector('[data-ok]').onclick = async () => {
+    const ref = panelEl; ref.busy = true;
+    const value = o.read ? o.read(p) : null;
+    p.innerHTML = `<div class="busy">${loaderHTML(o.busyText || 'ROLLING THE DICE...')}</div>`;
+    const [r] = await Promise.all([o.action(value), wait(RM ? 0 : 700)]);
+    if (panelEl !== ref) return;
+    if (r && r.ok) {
+      if (o.success) {
+        p.innerHTML = `<div class="done"><svg class="cx-ok" width="54" height="54" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" fill="none" stroke="#C7A45B" stroke-width="1.2"/><path d="M15 27l7 7 15-16" fill="none" stroke="#F2EFE8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg><h3>${o.success}</h3>${o.successSub ? `<p class="eyebrow muted">${o.successSub}</p>` : ''}</div>`;
+        anim(p.querySelector('path'), [{ strokeDashoffset: 40 }, { strokeDashoffset: 0 }], { duration: 420, delay: 80 });
+        await wait(RM ? 400 : 1250);
+      }
+      ref.busy = false; closePanel(); o.after && o.after(r);
+    } else {
+      ref.busy = false; closePanel();
+      o.fail ? o.fail(r) : toast(msgOf(r, o.failText), 'error');
+    }
+  };
+}
+
+/* ---------------- gate: sign in, then open ---------------- */
+const gateAction = () => $('#gateAction');
+function setGate(html) { gateAction().innerHTML = html; anim(gateAction(), [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 420 }); }
+
+function showSignIn() {
+  $('#envelope').classList.remove('ready');
+  $('#envelope').setAttribute('aria-label', 'Sealed invitation. Sign in to open.');
+  if (DEMO) {
+    setGate(`<button class="btn btn-red" data-demo="guest">CONTINUE WITH GOOGLE</button>
+      <button class="link" data-demo="host">PREVIEW AS THE HOST</button>
+      <p class="fine">Preview mode · sign-in is simulated in this browser</p>`);
+    $$('[data-demo]', gateAction()).forEach(b => b.onclick = () => onCredential('demo:' + b.dataset.demo));
+    return;
+  }
+  setGate(`<div class="gsi-slot" id="gsi"></div><p class="fine">Private event · sign in with Google to open</p>`);
+  loadGsi().then(() => {
+    google.accounts.id.initialize({ client_id: CONFIG.GOOGLE_CLIENT_ID, callback: r => onCredential(r.credential), ux_mode: 'popup', auto_select: false, itp_support: true });
+    google.accounts.id.renderButton($('#gsi'), { type: 'standard', theme: 'filled_black', size: 'large', shape: 'pill', text: 'continue_with', logo_alignment: 'left', width: 264 });
+  }).catch(() => setGate(`<p class="gate-note">Google sign-in didn't load. Check your connection, then reload the page.</p>`));
+}
+function loadGsi() {
+  return new Promise((res, rej) => {
+    if (window.google && google.accounts && google.accounts.id) return res();
+    const s = document.createElement('script'); s.src = 'https://accounts.google.com/gsi/client'; s.async = true; s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+async function onCredential(credential) {
+  setGate(loaderHTML('CHECKING THE GUEST LIST...'));
+  const r = await api('auth', { credential });
+  if (r.ok) { S.session = r.session; store.set(SKEY, r.session); return gateReady(false); }
+  if (r.code === 'NOT_INVITED') {
+    setGate(`<p class="gate-welcome">THIS INVITATION IS PRIVATE</p>
+      <p class="gate-note">${esc(r.email || 'That account')} isn't on the guest list. Ask the host to add it, or use the account your invitation went to.</p>
+      <button class="link" id="retry">USE ANOTHER ACCOUNT</button>`);
+    $('#retry').onclick = () => { if (!DEMO && window.google) google.accounts.id.disableAutoSelect(); showSignIn(); };
+    return;
+  }
+  toast(r.code === 'NETWORK' ? MSG.NETWORK : 'Sign-in didn’t go through. Please try again.', 'error');
+  showSignIn();
+}
+function gateReady(returning) {
+  const first = (S.state && S.state.me.first) || '';
+  const env = $('#envelope');
+  env.classList.add('ready');
+  env.setAttribute('aria-label', 'Open the invitation');
+  const touch = matchMedia('(pointer:coarse)').matches;
+  setGate(`<p class="gate-welcome">${returning ? 'WELCOME BACK' : 'WELCOME'}, ${esc(first.toUpperCase())}</p>
+    <button class="btn btn-red btn-open" id="openBtn">OPEN</button>
+    <p class="fine">${touch ? 'Tap or swipe up on the envelope' : 'Or click the envelope'}</p>`);
+  $('#openBtn').onclick = openEnvelope;
+  if (returning) {
+    const sk = document.createElement('button'); sk.className = 'skip'; sk.id = 'skip'; sk.textContent = 'SKIP TO THE GAME ROOM';
+    sk.onclick = () => { sk.remove(); enterApp(true); };
+    document.body.appendChild(sk);
+  }
+}
+function nudge() {
+  const env = $('#envelope');
+  anim(env, [{ transform: 'rotate(0)' }, { transform: 'rotate(-2.5deg)' }, { transform: 'rotate(2deg)' }, { transform: 'rotate(-1deg)' }, { transform: 'rotate(0)' }], { duration: 420, fill: 'none' });
+  const a = gateAction().firstElementChild;
+  if (a) anim(a, [{ transform: 'scale(1)' }, { transform: 'scale(1.05)' }, { transform: 'scale(1)' }], { duration: 420, fill: 'none' });
+}
+function bindEnvelope() {
+  const env = $('#envelope');
+  let sy = null, dy = 0;
+  const ready = () => env.classList.contains('ready');
+  env.addEventListener('pointerdown', e => { sy = e.clientY; dy = 0; try { env.setPointerCapture(e.pointerId); } catch (x) {} });
+  env.addEventListener('pointermove', e => {
+    if (sy == null || !ready()) return;
+    dy = Math.min(0, e.clientY - sy);
+    env.style.transform = `translateY(${dy * .28}px) rotate(${dy * -.01}deg)`;
+  });
+  env.addEventListener('pointerup', () => {
+    if (sy == null) return;
+    const moved = dy; sy = null;
+    env.style.transform = '';
+    if (!ready()) return nudge();
+    if (moved < -34 || Math.abs(moved) < 8) openEnvelope();
+  });
+  env.addEventListener('pointercancel', () => { sy = null; env.style.transform = ''; });
+  env.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ready() ? openEnvelope() : nudge(); } });
+}
+
+let opening = false;
+async function openEnvelope() {
+  if (opening) return; opening = true;
+  const sk = $('#skip'); if (sk) sk.remove();
+  const env = $('#envelope'), flap = $('#envFlap'), card = $('#envCard'), light = $('#envLight');
+  anim(gateAction(), [{ opacity: 1 }, { opacity: 0 }], { duration: 250 });
+  // 1 — the envelope reacts
+  await anim(env, [{ transform: 'scale(1) rotate(0)' }, { transform: 'scale(.965) rotate(-1.2deg)', offset: .35 }, { transform: 'scale(1.025) rotate(.7deg)', offset: .72 }, { transform: 'scale(1) rotate(0)' }], { duration: 440, easing: 'cubic-bezier(.3,.7,.4,1)' });
+  // 2 — the seal breaks, the flap lifts
+  anim($('.seal-l'), [{ transform: 'none', opacity: 1 }, { transform: 'translate(-34%,70%) rotate(-42deg)', opacity: 0 }], { duration: 700, easing: 'cubic-bezier(.3,.6,.4,1)' });
+  anim($('.seal-r'), [{ transform: 'none', opacity: 1 }, { transform: 'translate(34%,80%) rotate(38deg)', opacity: 0 }], { duration: 700, easing: 'cubic-bezier(.3,.6,.4,1)' });
+  anim(flap, [{ transform: 'perspective(800px) rotateX(0deg)', filter: 'brightness(1)' }, { transform: 'perspective(800px) rotateX(180deg)', filter: 'brightness(.5)' }], { duration: 720, delay: 140, easing: 'cubic-bezier(.55,0,.2,1)' });
+  setTimeout(() => { flap.style.zIndex = 1; }, RM ? 0 : 500);
+  await wait(RM ? 0 : 520);
+  // 3 — warm light, the card rises
+  anim(light, [{ opacity: 0, transform: 'translate(-50%,-50%) scale(.3)' }, { opacity: 1, transform: 'translate(-50%,-50%) scale(1.15)' }], { duration: 1000, easing: 'cubic-bezier(.2,.7,.3,1)' });
+  anim(card, [{ transform: 'translateY(0)' }, { transform: 'translateY(-36%)' }], { duration: 900, easing: 'cubic-bezier(.2,.8,.2,1)' });
+  // 4 — particles
+  if (!RM) particles(env, 28);
+  await wait(RM ? 0 : 950);
+  // 5 — into the event identity
+  anim($('#bloom'), [{ opacity: 0 }, { opacity: 1, offset: .45 }, { opacity: 0 }], { duration: 1000 });
+  await anim($('#gateInner'), [{ opacity: 1, transform: 'scale(1)', filter: 'blur(0)' }, { opacity: 0, transform: 'scale(1.1)', filter: 'blur(8px)' }], { duration: 560, easing: 'cubic-bezier(.5,0,.75,0)' });
+  $('#gate').hidden = true;
+  showReveal();
+}
+function particles(env, n) {
+  const r = env.getBoundingClientRect();
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('span'); s.className = 'particle';
+    const x = r.left + r.width * (.25 + Math.random() * .5), y = r.top + r.height * .04;
+    s.style.left = x + 'px'; s.style.top = y + 'px'; s.style.position = 'fixed';
+    const sz = 2 + Math.random() * 3; s.style.width = s.style.height = sz + 'px';
+    document.body.appendChild(s);
+    const dx = (Math.random() - .5) * 260, dyy = -60 - Math.random() * 220;
+    anim(s, [{ transform: 'translate(0,0) scale(.4)', opacity: 0 }, { opacity: 1, offset: .2 }, { transform: `translate(${dx}px,${dyy}px) scale(1)`, opacity: 0 }],
+      { duration: 1300 + Math.random() * 900, delay: Math.random() * 380, easing: 'cubic-bezier(.15,.6,.3,1)' }).then(() => s.remove());
+  }
+}
+
+/* ---------------- reveal: dice fall into the bowl ---------------- */
+let revealDone = false;
+async function showReveal() {
+  const st = S.state.settings;
+  const svg = $('#heroEmblem');
+  svg.innerHTML = emblemSVG({ uid: 'hero' });
+  $('#revealName').textContent = st.event_name || '';
+  $('#revealDate').textContent = st.event_date_display || '';
+  $('#revealSub').textContent = st.subtitle || '';
+  const texts = ['#revealName', '#revealDate', '#revealSub', '#enterBtn'].map(s => $(s));
+  texts.forEach(t => { t.style.opacity = 0; });
+  $('#reveal').hidden = false;
+  const skip = () => { revealDone = true; svg.getAnimations({ subtree: true }).forEach(a => a.finish()); texts.forEach(t => { t.getAnimations().forEach(a => a.finish()); t.style.opacity = 1; }); };
+  $('#reveal').addEventListener('pointerdown', e => { if (!revealDone && e.target.id !== 'enterBtn') skip(); }, { once: true });
+
+  const ring = svg.querySelector('.em-ring'), bowl = svg.querySelector('.em-bowl'), front = svg.querySelector('.em-front');
+  [ring, svg.querySelector('.em-ring2')].forEach(c => { if (c) { c.style.strokeDasharray = 600; anim(c, [{ strokeDashoffset: 600 }, { strokeDashoffset: 0 }], { duration: 1300, easing: 'cubic-bezier(.6,0,.2,1)' }); } });
+  [bowl, front].forEach(g => { g.style.transformBox = 'fill-box'; g.style.transformOrigin = '50% 100%'; anim(g, [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 600 }); });
+  const dice = $$('.em-drop', svg);
+  dice.forEach(d => { d.style.transformBox = 'fill-box'; d.style.transformOrigin = '50% 50%'; d.style.opacity = 0; });
+  await wait(RM ? 0 : 380);
+  const drops = dice.map((d, i) => {
+    const k = +d.dataset.k, rot = [-160, 120, 200][k];
+    d.style.opacity = 1;
+    return anim(d, [
+      { transform: `translateY(-150px) rotate(${rot}deg)`, opacity: 0, easing: 'cubic-bezier(.55,0,.9,.45)' },
+      { transform: 'translateY(0) rotate(0deg)', opacity: 1, offset: .52, easing: 'cubic-bezier(.2,.6,.4,1)' },
+      { transform: 'translateY(-15px) rotate(-6deg)', offset: .68, easing: 'cubic-bezier(.5,0,.8,.4)' },
+      { transform: 'translateY(0) rotate(0deg)', offset: .82, easing: 'cubic-bezier(.2,.6,.4,1)' },
+      { transform: 'translateY(-3px) rotate(1deg)', offset: .91 },
+      { transform: 'translateY(0) rotate(0)' },
+    ], { duration: 1050, delay: i * 130, easing: 'linear' });
+  });
+  await Promise.all(drops);
+  anim(front, [{ transform: 'scale(1)' }, { transform: 'scale(1.012,.985)' }, { transform: 'scale(1)' }], { duration: 300, fill: 'none' });
+  for (let i = 0; i < texts.length; i++) {
+    texts[i].style.opacity = '';
+    anim(texts[i], [{ opacity: 0, transform: 'translateY(12px)', filter: 'blur(4px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }], { duration: 640, delay: i * 150 });
+  }
+  revealDone = true;
+}
+
+/* ---------------- transition into the game room ---------------- */
+async function enterApp(fromSkip) {
+  mountApp();
+  const app = $('#app');
+  app.hidden = false;
+  if (fromSkip) {
+    $('#gate').hidden = true;
+    await anim(app, [{ opacity: 0 }, { opacity: 1 }], { duration: 500, fill: 'none' });
+    return;
+  }
+  const btn = $('#enterBtn').getBoundingClientRect();
+  const cx = btn.left + btn.width / 2, cy = btn.top + btn.height / 2;
+  app.style.position = 'fixed'; app.style.inset = '0'; app.style.overflow = 'hidden'; app.style.zIndex = 30;
+  anim($('#revealInner'), [{ transform: 'scale(1)', opacity: 1, filter: 'blur(0)' }, { transform: 'scale(.9)', opacity: 0, filter: 'blur(6px)' }], { duration: 700, easing: 'cubic-bezier(.5,0,.3,1)' });
+  await anim(app, [{ clipPath: `circle(0px at ${cx}px ${cy}px)` }, { clipPath: `circle(${Math.hypot(innerWidth, innerHeight)}px at ${cx}px ${cy}px)` }], { duration: 950, easing: 'cubic-bezier(.65,0,.25,1)', fill: 'none' });
+  app.style.position = ''; app.style.inset = ''; app.style.overflow = ''; app.style.zIndex = '';
+  $('#reveal').hidden = true;
+}
+
+/* ---------------- app ---------------- */
+const NAV = [['home', 'HOME'], ['seating', 'SEATING'], ['potluck', 'POTLUCK'], ['info', 'INFO']];
+function mountApp() {
+  if (S.inApp) return;
+  S.inApp = true;
+  $('#navEmblem').innerHTML = emblemSVG({ uid: 'nav', ring: false });
+  $('#previewFlag').hidden = !DEMO;
+  $('#nav').innerHTML = NAV.map(([r, l]) => `<a href="#${r}" data-r="${r}">${l}</a>`).join('');
+  $('#tabbar').innerHTML = NAV.map(([r, l]) => `<a href="#${r}" data-r="${r}">${l}</a>`).join('');
+  S.route = routeFromHash();
+  renderChrome();
+  renderView(false);
+  startPolling();
+}
+function routeFromHash() {
+  const r = (location.hash || '#home').slice(1);
+  return ['home', 'seating', 'potluck', 'info', 'review', 'admin'].includes(r) ? r : 'home';
+}
+window.addEventListener('hashchange', () => {
+  if (!S.inApp) return;
+  const r = routeFromHash();
+  if (r === S.route) return;
+  S.route = r;
+  closeMenu();
+  renderView(true);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  if (r === 'admin') loadAdmin();
+});
+function go(r) { if (location.hash === '#' + r) { renderView(true); } else location.hash = r; }
+
+function renderChrome() {
+  const st = S.state; if (!st) return;
+  $('#brandName').textContent = st.settings.short_name || 'DICE GAME';
+  document.title = st.settings.event_name || 'A Private Invitation';
+  const me = st.me;
+  $('#avatar').innerHTML = me.picture ? `<img src="${esc(me.picture)}" alt="" referrerpolicy="no-referrer">` : esc((me.first || '?').charAt(0).toUpperCase());
+  $('#chipName').textContent = (me.first || '').toUpperCase();
+  $$('#nav a, #tabbar a').forEach(a => a.classList.toggle('on', a.dataset.r === S.route));
+  const sticky = $('#sticky');
+  if (S.route === 'seating') {
+    sticky.hidden = false;
+    sticky.className = 'sticky-seat' + (me.seat ? '' : ' none');
+    sticky.innerHTML = me.seat ? `<i></i>YOUR SEAT: <b>${esc(me.seat.tableName)} / SEAT ${pad2(me.seat.seat)}</b>` : '<i></i>NO SEAT YET · TAP AN OPEN CHAIR';
+  } else sticky.hidden = true;
+}
+
+/* chip menu */
+function closeMenu() { $('#menu').hidden = true; $('#chip').setAttribute('aria-expanded', 'false'); }
+$('#chip').addEventListener('click', e => {
+  e.stopPropagation();
+  const m = $('#menu');
+  if (!m.hidden) return closeMenu();
+  const me = S.state.me;
+  m.innerHTML = `<a href="#review" role="menuitem">YOUR NIGHT <span>→</span></a>${me.isAdmin ? '<a href="#admin" role="menuitem">HOST DASHBOARD <span>→</span></a>' : ''}<hr><button role="menuitem" id="signOut">SIGN OUT</button>`;
+  m.hidden = false; $('#chip').setAttribute('aria-expanded', 'true');
+  anim(m, [{ opacity: 0, transform: 'scale(.96)' }, { opacity: 1, transform: 'none' }], { duration: 220, fill: 'none' });
+  $('#signOut').onclick = () => signOut(false);
+});
+document.addEventListener('click', e => { if (!e.target.closest('.user')) closeMenu(); });
+
+function signOut(expired) {
+  store.del(SKEY); S.session = null;
+  if (!DEMO && window.google && google.accounts) try { google.accounts.id.disableAutoSelect(); } catch (e) {}
+  if (expired) store.set('dicegame_flash', '1');
+  location.hash = ''; location.reload();
+}
+
+/* state → UI */
+function applyState(st) {
+  S.state = st;
+  if (!S.inApp) return;
+  const sig = JSON.stringify([st.tables, st.items, st.me, st.settings, st.faq, st.totals, st.activity && st.activity[0], st.contributors]);
+  if (sig === S.sig) return;
+  S.sig = sig;
+  renderChrome();
+  if (S.route !== 'admin') renderView(false);
+}
+function renderView(animate) {
+  const st = S.state; if (!st) return;
+  renderChrome();
+  const v = $('#view');
+  const fn = { home: viewHome, seating: viewSeating, potluck: viewPotluck, review: viewReview, info: viewInfo, admin: viewAdmin }[S.route] || viewHome;
+  if (S.route === 'admin' && !st.me.isAdmin) { location.hash = 'home'; return; }
+  v.innerHTML = fn(st);
+  if (S.route === 'seating') afterSeating(animate);
+  if (animate) anim(v, [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 420, fill: 'none' });
+}
+
+/* ---------------- HOME ---------------- */
+function viewHome(st) {
+  const me = st.me, set = st.settings;
+  const seat = me.seat, c = me.contribution, done = seat && c;
+  const left = (seat ? 0 : 1) + (c ? 0 : 1);
+  return `<div class="page">
+    <section class="hero">
+      <h1 class="display">WELCOME, ${esc((me.first || '').toUpperCase())}</h1>
+      <p class="lede">The table is waiting.</p>
+      <span class="date-pill"><i></i>${esc(set.event_date_display)}</span>
+    </section>
+    <section class="cards" aria-label="Your status">
+      <a class="scard ${seat ? 'done' : ''}" href="#seating">
+        <span class="k">YOUR SEAT</span>
+        ${seat ? `<span class="v">${esc(titleCase(seat.tableName))}</span><span class="v2">Seat ${pad2(seat.seat)}</span>` : `<span class="v dim">Not selected</span><span class="cta arrow">CHOOSE YOUR SEAT</span>`}
+      </a>
+      <a class="scard ${c ? 'done' : ''}" href="#potluck">
+        <span class="k">YOUR CONTRIBUTION</span>
+        ${c ? `<span class="v">${esc(c.name)}</span><span class="v2">${servesLine(c.serving)}</span>` : `<span class="v dim">Not chosen</span><span class="cta arrow">CHOOSE WHAT TO BRING</span>`}
+      </a>
+      <a class="scard ${me.ready && done ? 'done' : ''}" href="#review">
+        <span class="k">EVENT STATUS</span>
+        ${me.ready && done ? `<span class="v">You're all set.</span><span class="v2">See you at the table.</span>`
+          : done ? `<span class="v">Almost there.</span><span class="cta arrow">REVIEW YOUR NIGHT</span>`
+          : `<span class="v">${left} step${left > 1 ? 's' : ''} left.</span><span class="v2">${seat ? 'Pick what you’ll bring.' : 'Start with your seat.'}</span>`}
+      </a>
+    </section>
+    <section class="notes">
+      <div class="note"><p class="eyebrow">A NOTE FROM THE HOST</p><div><p class="body">${esc(set.welcome_message)}</p></div></div>
+      <div class="note"><p class="eyebrow">BEFORE WE ROLL</p><div><p class="body">${esc(set.remarks_message)}</p></div></div>
+    </section>
+  </div>`;
+}
+const servesLine = s => /^\d/.test(String(s)) ? `Serves ${esc(s)}` : esc(s);
+
+/* ---------------- SEATING ---------------- */
+const HAN = ['壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖', '拾'];
+const geoCache = {};
+function seatGeometry(n) {
+  if (geoCache[n]) return geoCache[n];
+  const W = 160, H = 100, x0 = 12, y0 = 12, x1 = 148, y1 = 88, r = 30, cx = 80;
+  const segs = [];
+  const line = (ax, ay, bx, by) => segs.push({ t: 'l', ax, ay, bx, by, len: Math.hypot(bx - ax, by - ay) });
+  const arc = (ox, oy, a0, a1) => segs.push({ t: 'a', ox, oy, a0, a1, len: r * Math.abs(a1 - a0) });
+  line(cx, y0, x1 - r, y0); arc(x1 - r, y0 + r, -Math.PI / 2, 0); line(x1, y0 + r, x1, y1 - r); arc(x1 - r, y1 - r, 0, Math.PI / 2);
+  line(x1 - r, y1, x0 + r, y1); arc(x0 + r, y1 - r, Math.PI / 2, Math.PI); line(x0, y1 - r, x0, y0 + r); arc(x0 + r, y0 + r, Math.PI, 1.5 * Math.PI); line(x0 + r, y0, cx, y0);
+  const L = segs.reduce((s, g) => s + g.len, 0), step = L / Math.max(1, n), off = n % 2 ? 0 : step / 2;
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    let d = (off + i * step) % L;
+    for (const g of segs) {
+      if (d <= g.len + 1e-9) {
+        let x, y;
+        if (g.t === 'l') { const k = g.len ? d / g.len : 0; x = g.ax + (g.bx - g.ax) * k; y = g.ay + (g.by - g.ay) * k; }
+        else { const a = g.a0 + (g.a1 - g.a0) * (d / g.len); x = g.ox + r * Math.cos(a); y = g.oy + r * Math.sin(a); }
+        pts.push({ x, y }); break;
+      }
+      d -= g.len;
+    }
+  }
+  let start = 0, best = Infinity;
+  pts.forEach((p, i) => { if (p.y < y0 + .5 && p.x < best) { best = p.x; start = i; } });
+  return (geoCache[n] = pts.slice(start).concat(pts.slice(0, start)).map(p => ({ x: +(p.x / W * 100).toFixed(3), y: +(p.y / H * 100).toFixed(3) })));
+}
+function initials(n) { const p = String(n).replace(/\./g, '').split(/\s+/).filter(Boolean); return ((p[0] || '?')[0] + (p[1] ? p[1][0] : (p[0] || '')[1] || '')).toUpperCase(); }
+function ago(iso) {
+  const s = Math.max(0, (Date.now() - Date.parse(iso)) / 1000);
+  if (!isFinite(s)) return '';
+  if (s < 60) return 'just now'; if (s < 3600) return Math.floor(s / 60) + 'm ago'; if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+  return Math.floor(s / 86400) + 'd ago';
+}
+function viewSeating(st) {
+  const me = st.me, t = st.totals, open = st.settings.seating_open;
+  const latest = (st.activity || [])[0];
+  return `<div class="page">
+    <section class="shead">
+      <p class="eyebrow">THE TABLES</p>
+      <div class="count"><span class="big"><span>${t.claimed}</span><span class="of"> / ${t.capacity}</span></span><span class="unit">SEATS CLAIMED</span></div>
+      <p class="lede">Choose where you want to roll.</p>
+      <p class="live"><i></i>${latest ? `<span>LIVE · <b>${esc(latest.text)}</b> · ${ago(latest.at)}</span>` : '<span>LIVE · seats update on their own</span>'}</p>
+    </section>
+    ${!open ? '<p class="banner">Seating is locked by the host. Your seat is saved.</p>' : ''}
+    ${me.seat ? `<section class="mine-bar">
+        <span class="seal-mini">YOU</span>
+        <div class="what"><span class="k">YOUR SEAT</span><span class="v">${esc(me.seat.tableName)} · SEAT ${pad2(me.seat.seat)}</span></div>
+        ${open ? `<div class="acts"><button class="btn btn-line btn-sm" data-act="change-seat">CHANGE SEAT</button><button class="link" data-act="leave-seat">GIVE UP SEAT</button></div>` : ''}
+      </section>` : `<section class="mine-bar empty"><span class="seal-mini">—</span><div class="what"><span class="k">YOUR SEAT</span><span class="v">Not selected</span></div><p class="fine">Tap any open chair to claim it.</p></section>`}
+    <p class="legend" aria-hidden="true"><span><i class="lo"></i>AVAILABLE</span><span><i class="lt"></i>TAKEN</span><span><i class="lm"></i>YOU</span></p>
+    <section class="tables" id="tables" aria-label="Tables">${st.tables.map((tb, i) => tableCard(tb, i, open)).join('')}</section>
+  </div>`;
+}
+function tableCard(t, i, open) {
+  const geo = seatGeometry(t.capacity);
+  const full = t.active && t.claimed >= t.capacity;
+  const seats = t.seats.map((s, j) => {
+    const p = geo[j];
+    const label = s.s === 'open' ? (t.active ? 'AVAILABLE' : 'CLOSED') : s.s === 'mine' ? 'YOUR SEAT' : 'TAKEN · ' + s.name.toUpperCase();
+    const inner = s.s === 'mine' ? 'YOU' : s.s === 'taken' ? esc(initials(s.name)) : pad2(s.n);
+    const pending = S.pending && S.pending.t === t.id && S.pending.n === s.n ? ' pending' : '';
+    const edge = p.x < 14 ? ' tl' : p.x > 86 ? ' tr' : '';
+    return `<button class="seat ${s.s}${pending}${edge}" style="left:${p.x}%;top:${p.y}%" data-t="${esc(t.id)}" data-n="${s.n}" data-label="${esc(label)}"
+      aria-label="${esc(t.name)}, seat ${s.n}: ${esc(label.toLowerCase())}"${s.s !== 'open' || !t.active || !open ? ' aria-disabled="true"' : ''}><span>${inner}</span></button>`;
+  }).join('');
+  return `<article class="tcard ${t.active ? '' : 'closed'}" data-table="${esc(t.id)}">
+    <header class="thead"><h2>${esc(t.name)}${!t.active ? '<span class="tag">CLOSED</span>' : full ? '<span class="tag">FULL</span>' : ''}</h2>
+      <p><b>${t.claimed}</b> / ${t.capacity} OCCUPIED</p></header>
+    <div class="tstage">
+      <div class="tsurface"><div class="ring"><span class="han">${HAN[i] || ''}</span></div><div class="tl"><span>${esc(t.name)}</span><b>${t.claimed} / ${t.capacity}</b></div></div>
+      ${seats}
+    </div>
+  </article>`;
+}
+function afterSeating(animate) {
+  const now = {};
+  S.state.tables.forEach(t => t.seats.forEach(s => { now[t.id + '#' + s.n] = s.s; }));
+  if (S.prevSeats && !animate) {
+    Object.keys(now).forEach(k => {
+      if (S.prevSeats[k] && S.prevSeats[k] !== now[k]) {
+        const [tid, n] = k.split('#');
+        const el = $(`.seat[data-t="${CSS.escape(tid)}"][data-n="${n}"]`);
+        if (el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+      }
+    });
+  }
+  S.prevSeats = now;
+  if (animate) $$('.tcard').forEach((c, i) => anim(c, [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }], { duration: 520, delay: 80 + i * 90, fill: 'none' }));
+  // a pending seat that someone else just took
+  if (S.pending && panelEl && !panelEl.busy) {
+    const t = S.state.tables.find(x => x.id === S.pending.t);
+    const s = t && t.seats[S.pending.n - 1];
+    if (!s || s.s === 'taken') { closePanel(); toast(MSG.SEAT_TAKEN, 'error'); }
+  }
+}
+function onSeat(btn) {
+  const st = S.state, tid = btn.dataset.t, n = +btn.dataset.n;
+  const t = st.tables.find(x => x.id === tid); if (!t) return;
+  const s = t.seats[n - 1];
+  if (s.s === 'taken') return toast(`${t.name} · Seat ${pad2(n)} — ${s.name}`);
+  if (s.s === 'mine') return toast('That’s your seat.', 'ok');
+  if (!t.active) return toast(MSG.TABLE_CLOSED);
+  if (!st.settings.seating_open) return toast(MSG.SEATING_LOCKED);
+  const cur = st.me.seat;
+  S.pending = { t: tid, n };
+  btn.classList.add('pending');
+  panel({
+    eyebrow: cur ? 'CHANGE SEAT' : 'CLAIM YOUR SEAT',
+    title: cur ? `Move from ${esc(titleCase(cur.tableName))} / Seat ${pad2(cur.seat)} to ${esc(titleCase(t.name))} / Seat ${pad2(n)}?` : `${esc(t.name)}<br>SEAT ${pad2(n)}`,
+    body: cur ? 'Your current seat opens up for someone else right away.' : 'This will be your seat for the game.',
+    confirm: cur ? 'MOVE SEAT' : 'CONFIRM',
+    busyText: 'ROLLING THE DICE...',
+    success: 'YOU’RE LOCKED IN',
+    successSub: `${esc(t.name)} · SEAT ${pad2(n)}`,
+    action: () => api('claimSeat', { tableId: tid, seat: n }),
+    fail: r => {
+      toast(msgOf(r, 'We couldn’t save your seat. Please try again.'), 'error');
+      const tb = $('#tables'); if (tb) { tb.scrollIntoView({ behavior: 'smooth', block: 'start' }); tb.classList.add('choosing'); setTimeout(() => tb.classList.remove('choosing'), 2400); }
+    },
+  });
+}
+
+/* ---------------- POTLUCK ---------------- */
+function itemStatus(it) {
+  if (it.max && it.count >= it.max) return ['full', 'FULL'];
+  if (it.count === 0 || (it.needed && it.count < Math.max(1, it.target))) return ['needed', 'NEEDED'];
+  if (it.count < it.target) return ['more', 'COULD USE MORE'];
+  return ['covered', 'WELL COVERED'];
+}
+function viewPotluck(st) {
+  const me = st.me, c = me.contribution, open = st.settings.potluck_open;
+  const cats = [];
+  st.items.forEach(it => { let g = cats.find(x => x.name === it.category); if (!g) cats.push(g = { name: it.category, items: [] }); g.items.push(it); });
+  return `<div class="page">
+    <section class="shead"><p class="eyebrow">DICE • FOOD • FRIENDS</p><h1 class="display">THE POTLUCK</h1><p class="lede">Bring something good to the table.</p></section>
+    ${!open ? '<p class="banner">The potluck is locked by the host. Your pick is saved.</p>' : ''}
+    ${c ? `<section class="contrib"><div class="what"><span class="k">YOUR CONTRIBUTION</span><span class="v">${esc(c.name)}</span><span class="s">${servesLine(c.serving)}</span></div>
+        <div class="acts">${open ? '<button class="btn btn-line btn-sm" data-act="change-item">CHANGE CONTRIBUTION</button>' : ''}${st.me.seat ? '<a class="link arrow" href="#review">REVIEW YOUR NIGHT</a>' : '<a class="link arrow" href="#seating">CHOOSE YOUR SEAT</a>'}</div></section>`
+      : `<section class="contrib empty"><div class="what"><span class="k">YOUR CONTRIBUTION</span><span class="v">Not chosen</span><span class="s">Pick one thing you’ll bring. Items marked needed help most.</span></div></section>`}
+    <div id="plist" style="display:flex;flex-direction:column;gap:clamp(40px,6vw,60px)">
+    ${cats.map(g => `<section class="pcat"><div class="pcat-head"><h2>${esc(g.name)}</h2><span>${g.items.reduce((s, i) => s + i.count, 0)} bringing</span></div>
+      <div class="pgrid">${g.items.map(it => itemCard(it, open)).join('')}</div></section>`).join('')}
+    </div>
+    ${st.contributors.length ? `<section class="block"><p class="eyebrow">WHO’S BRINGING WHAT</p><div class="ledger">${st.contributors.map(x => `<div><span>${esc(x.name)}</span><span>${esc(x.item)}</span></div>`).join('')}</div></section>` : ''}
+  </div>`;
+}
+function itemCard(it, open) {
+  const [cls, label] = itemStatus(it);
+  const fill = it.target > 0 ? Math.min(10, Math.round(it.count / it.target * 8)) : (it.count ? 10 : 0);
+  const full = cls === 'full';
+  const names = it.names.slice(0, 3).join(', ') + (it.names.length > 3 ? ` +${it.names.length - 3}` : '');
+  const rec = /^\d/.test(it.serving) ? `RECOMMENDED FOR ${esc(it.serving)} PEOPLE` : `RECOMMENDED: ${esc(String(it.serving).toUpperCase())}`;
+  return `<article class="pitem ${it.mine ? 'mine' : ''} ${full ? 'full' : ''} ${cls === 'needed' ? 'needy' : ''}">
+    <div class="top"><h3>${esc(it.name)}</h3><span class="status ${cls}">${label}</span></div>
+    ${it.description ? `<p class="desc">${esc(it.description)}</p>` : ''}
+    ${it.serving ? `<p class="rec">${rec}</p>` : ''}
+    <div class="meter" aria-hidden="true">${Array.from({ length: 10 }, (_, i) => `<i class="${i < fill ? 'on' : ''}"></i>`).join('')}</div>
+    <p class="who">${it.count ? `<b>${it.count} ${it.count === 1 ? 'person' : 'people'} bringing</b> · ${esc(names)}` : 'No one yet'}${it.max ? ` · max ${it.max}` : ''}</p>
+    ${it.mine ? `<button class="btn btn-line btn-sm" disabled>YOU’RE BRINGING THIS</button>`
+      : `<button class="btn btn-line btn-sm" data-item="${esc(it.id)}" ${full || !open ? 'disabled' : ''}>${full ? 'FULL' : 'I’LL BRING THIS'}</button>`}
+  </article>`;
+}
+function onItem(id) {
+  const st = S.state, it = st.items.find(x => x.id === id); if (!it) return;
+  const cur = st.me.contribution;
+  const serves = /^\d/.test(it.serving) ? `approximately ${esc(it.serving)} people` : esc(it.serving);
+  panel({
+    eyebrow: cur ? 'CHANGE CONTRIBUTION' : 'THE POTLUCK',
+    title: cur ? `Switch from ${esc(cur.name)} to ${esc(it.name)}?` : `Bring ${esc(it.name)} for ${serves}?`,
+    body: cur ? `${esc(it.name)} · for ${serves}.` : 'You can change this any time before the night.',
+    confirm: 'CONFIRM',
+    busyText: 'SETTING THE TABLE...',
+    success: `YOU’RE BRINGING ${esc(it.name.toUpperCase())}`,
+    successSub: it.serving ? servesLine(it.serving).toUpperCase() : '',
+    action: () => api('claimItem', { itemId: id }),
+    failText: 'Your contribution could not be saved.',
+    after: () => { if (st.me.seat && !st.me.ready) setTimeout(() => toast('Both done. Review your night when you’re ready.', 'ok'), 200); },
+  });
+}
+
+/* ---------------- REVIEW ---------------- */
+function viewReview(st) {
+  const me = st.me, seat = me.seat, c = me.contribution, done = seat && c;
+  return `<div class="page">
+    <section class="shead"><p class="eyebrow">YOUR NIGHT</p><h1 class="display">${done ? 'YOU’RE READY' : 'ALMOST READY'}</h1>
+      <p class="lede">${done ? 'One last look before you lock it in.' : 'Finish the missing step below, then lock it in.'}</p></section>
+    <section class="ticket">
+      <div class="trow"><span class="k">YOUR SEAT</span>${seat ? `<span class="v">${esc(seat.tableName)}<small>Seat ${pad2(seat.seat)}</small></span>` : '<span class="v dim">Not selected</span>'}
+        <a class="link" href="#seating">${seat ? 'EDIT SEAT' : 'CHOOSE SEAT'}</a></div>
+      <div class="trow"><span class="k">YOUR CONTRIBUTION</span>${c ? `<span class="v">${esc(c.name.toUpperCase())}<small>${servesLine(c.serving)}</small></span>` : '<span class="v dim">Not chosen</span>'}
+        <a class="link" href="#potluck">${c ? 'EDIT CONTRIBUTION' : 'CHOOSE'}</a></div>
+      <div class="trow"><span class="k">EVENT</span><span class="v">${esc(st.settings.event_date_display)}<small>${esc(st.settings.start_time)} · ${esc(st.settings.location)}</small></span><span></span></div>
+    </section>
+    <div class="review-acts"><button class="btn btn-red" data-act="ready" ${done ? '' : 'disabled'}>I’M READY</button>${me.ready && done ? '<span class="fine">You already confirmed. Changes since then are saved automatically.</span>' : ''}</div>
+  </div>`;
+}
+async function playComplete() {
+  const r = await api('setReady', { ready: true });
+  if (!r.ok) return toast(msgOf(r), 'error');
+  const st = S.state.settings;
+  const ov = document.createElement('div'); ov.className = 'complete';
+  ov.innerHTML = `<div class="cx-stage"><div class="cx-flash"></div><div class="cx-dice">${dieHTML(4)}${dieHTML(5)}${dieHTML(6)}</div>
+    <svg class="cx-check" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg></div>
+    <h2 class="cx-title">SEE YOU AT THE TABLE.</h2><p class="cx-sub">${esc(titleCase(st.event_date_display || ''))}</p>
+    <button class="link cx-back">BACK TO THE GAME ROOM</button>`;
+  document.body.appendChild(ov);
+  await anim(ov, [{ opacity: 0 }, { opacity: 1 }], { duration: 380 });
+  const dice = $$('.cx-dice .die', ov);
+  await Promise.all(dice.map((d, i) => anim(d, [
+    { transform: `translate(${(i - 1) * 90 + (Math.random() - .5) * 60}px,-140px) rotate(${360 + Math.random() * 360}deg)`, opacity: 0 },
+    { opacity: 1, offset: .2 },
+    { transform: 'translate(0,0) rotate(-8deg)', offset: .7, easing: 'cubic-bezier(.3,.7,.4,1)' },
+    { transform: 'translate(0,-8px) rotate(3deg)', offset: .85 },
+    { transform: 'none', opacity: 1 },
+  ], { duration: 950, delay: i * 90, easing: 'cubic-bezier(.4,0,.6,1)' })));
+  await wait(160);
+  anim($('.cx-flash', ov), [{ opacity: 0, transform: 'scale(.2)' }, { opacity: 1, transform: 'scale(1)', offset: .35 }, { opacity: 0, transform: 'scale(1.3)' }], { duration: 700 });
+  await anim($('.cx-dice', ov), [{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(.6)' }], { duration: 300, delay: 120 });
+  const ck = $('.cx-check', ov); ck.style.opacity = 1;
+  anim($('circle', ck), [{ strokeDashoffset: 151 }, { strokeDashoffset: 0 }], { duration: 560 });
+  await anim($('path', ck), [{ strokeDashoffset: 40 }, { strokeDashoffset: 0 }], { duration: 380, delay: 260 });
+  anim($('.cx-title', ov), [{ opacity: 0, transform: 'translateY(14px)', filter: 'blur(4px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }], { duration: 700 });
+  anim($('.cx-sub', ov), [{ opacity: 0 }, { opacity: 1 }], { duration: 600, delay: 260 });
+  anim($('.cx-back', ov), [{ opacity: 0 }, { opacity: 1 }], { duration: 600, delay: 1200 });
+  $('.cx-back', ov).onclick = () => anim(ov, [{ opacity: 1 }, { opacity: 0 }], { duration: 400 }).then(() => { ov.remove(); go('home'); });
+}
+
+/* ---------------- INFO ---------------- */
+function viewInfo(st) {
+  const s = st.settings;
+  return `<div class="page">
+    <section class="shead"><p class="eyebrow">INFO</p><h1 class="display">BEFORE THE GAME</h1></section>
+    <section class="facts"><div><span class="k">DATE</span><span class="v">${esc(s.event_date_display)}</span></div><div><span class="k">TIME</span><span class="v">${esc(s.start_time)}</span></div><div><span class="k">LOCATION</span><span class="v">${esc(s.location)}</span></div></section>
+    <section class="faq">${st.faq.map((q, i) => `<div class="qa ${S.ui.openFaq.has(i) ? 'open' : ''}">
+      <button data-faq="${i}" aria-expanded="${S.ui.openFaq.has(i)}" id="faq-q-${i}"><span>${esc(q.q)}</span><span class="pm" aria-hidden="true"></span></button>
+      <div class="ans" role="region" aria-labelledby="faq-q-${i}"><div><p>${esc(q.a)}</p></div></div></div>`).join('')}</section>
+    <section class="notes"><div class="note"><p class="eyebrow">ONE MORE THING</p><div><p class="body">${esc(s.host_message)}</p><p class="sig">— YOUR HOST</p></div></div></section>
+  </div>`;
+}
+
+/* ---------------- ADMIN ---------------- */
+const ATABS = [['overview', 'OVERVIEW'], ['seating', 'SEATING'], ['tables', 'TABLES'], ['potluck', 'POTLUCK'], ['content', 'CONTENT'], ['people', 'PEOPLE'], ['export', 'EXPORT']];
+async function loadAdmin() {
+  const r = await api('adminState');
+  if (!r.ok) { toast(msgOf(r), 'error'); return; }
+  S.ui.faqDraft = null;
+  if (S.route === 'admin') renderView(false);
+}
+function viewAdmin() {
+  const head = `<section class="shead"><p class="eyebrow">HOST DASHBOARD</p><h1 class="display">THE BACK ROOM</h1>
+    <p class="lede">Every change here writes straight to your Google Sheet, and edits made in the Sheet show up here.</p>
+    ${S.admin && S.admin.sheetUrl ? `<a class="link arrow" style="align-self:flex-start" href="${esc(S.admin.sheetUrl)}" target="_blank" rel="noopener">OPEN THE GOOGLE SHEET</a>` : DEMO ? '<p class="fine">Preview: the Sheet is simulated in this browser.</p>' : ''}</section>`;
+  if (!S.admin) return `<div class="page">${head}${loaderHTML('CHECKING THE SEATS...')}</div>`;
+  const tab = S.ui.adminTab;
+  const body = { overview: admOverview, seating: admSeating, tables: admTables, potluck: admPotluck, content: admContent, people: admPeople, export: admExport }[tab]();
+  return `<div class="page">${head}<nav class="adm-tabs" aria-label="Dashboard sections">${ATABS.map(([k, l]) => `<button data-atab="${k}" class="${k === tab ? 'on' : ''}">${l}</button>`).join('')}</nav>${body}</div>`;
+}
+function admOverview() {
+  const a = S.admin, ppl = a.people.length;
+  const active = a.tables.filter(t => t.active);
+  const cap = active.reduce((s, t) => s + t.capacity, 0);
+  const seated = a.people.filter(p => p.seat).length, brought = a.people.filter(p => p.item).length, ready = a.people.filter(p => p.ready).length;
+  const needed = a.items.filter(i => i.active && (i.count === 0 || (i.needed && i.count < Math.max(1, i.target))));
+  return `<section class="stats">
+      <div class="stat"><span class="k">PARTICIPANTS</span><span class="v">${ppl}</span><span class="s">signed in · ${a.accessMode === 'open' ? 'open to any Google account' : a.guestCount + ' on the guest list'}</span></div>
+      <div class="stat"><span class="k">SEATS CLAIMED</span><span class="v">${seated}<span> / ${cap}</span></span><span class="s">${active.length} open table${active.length === 1 ? '' : 's'}</span></div>
+      <div class="stat"><span class="k">POTLUCK COMPLETED</span><span class="v">${brought}<span> / ${ppl}</span></span><span class="s">${needed.length} item${needed.length === 1 ? '' : 's'} still needed</span></div>
+      <div class="stat"><span class="k">READY</span><span class="v">${ready}<span> / ${ppl}</span></span><span class="s">confirmed their night</span></div>
+    </section>
+    <section class="block"><div class="block-head"><h2>TABLES</h2></div><div class="rows">${a.tables.map(t => { const n = a.seating.filter(s => s.tableId === t.id).length; return `<div class="row"><span class="who">${esc(t.name)}</span><span class="fine">${t.active ? '' : 'CLOSED · '}${n} / ${t.capacity}</span></div>`; }).join('')}</div></section>
+    ${needed.length ? `<section class="block"><div class="block-head"><h2>STILL NEEDED</h2></div><div class="rows">${needed.map(i => `<div class="row"><span class="who">${esc(i.name)}</span><span class="fine">${i.count} / ${i.target} bringing</span></div>`).join('')}</div></section>` : ''}
+    <section class="block"><div class="block-head"><h2>RECENT ACTIVITY</h2></div><div class="rows">${(a.activity || []).map(x => `<div class="row"><span class="who">${esc(x.text)}</span><span class="fine">${ago(x.at)}</span></div>`).join('') || '<div class="row"><span class="who dim">NOTHING YET</span></div>'}</div></section>`;
+}
+function admSeating() {
+  const a = S.admin;
+  const byKey = {}; a.seating.forEach(s => { byKey[s.tableId + '#' + s.seat] = s; });
+  const unseated = a.people.filter(p => !p.seat);
+  return a.tables.map(t => `<section class="block"><div class="block-head"><h2>${esc(t.name)} <span class="fine">· ${a.seating.filter(s => s.tableId === t.id).length} / ${t.capacity}${t.active ? '' : ' · CLOSED'}</span></h2>
+      <button class="mini-btn" data-atab="tables">EDIT TABLE</button></div>
+      <div class="rows">${Array.from({ length: t.capacity }, (_, i) => {
+        const s = byKey[t.id + '#' + (i + 1)];
+        return `<div class="row"><span class="n">SEAT ${pad2(i + 1)}</span>${s ? `<span class="who">${esc(s.name)}</span><span class="acts"><button class="mini-btn" data-a="move" data-u="${esc(s.uid)}">MOVE</button><button class="mini-btn danger" data-a="clear" data-u="${esc(s.uid)}">CLEAR</button></span>`
+          : `<span class="who dim">AVAILABLE</span>${unseated.length ? `<span class="acts"><button class="mini-btn" data-a="assign" data-t="${esc(t.id)}" data-n="${i + 1}">ASSIGN</button></span>` : ''}`}</div>`;
+      }).join('')}</div></section>`).join('') +
+    `<section class="block"><div class="block-head"><h2>NOT SEATED YET <span class="fine">· ${unseated.length}</span></h2></div><div class="rows">${unseated.map(p => `<div class="row"><span class="who">${esc(p.name)}</span><span class="acts"><button class="mini-btn" data-a="move" data-u="${esc(p.uid)}">SEAT</button></span></div>`).join('') || '<div class="row"><span class="who dim">EVERYONE IS SEATED</span></div>'}</div></section>`;
+}
+function openSeatOptions(excludeUid) {
+  const a = S.admin, taken = {};
+  a.seating.forEach(s => { taken[s.tableId + '#' + s.seat] = true; });
+  const opts = [];
+  a.tables.forEach(t => { for (let n = 1; n <= t.capacity; n++) if (!taken[t.id + '#' + n]) opts.push(`<option value="${esc(t.id)}|${n}">${esc(t.name)} · Seat ${pad2(n)}${t.active ? '' : ' (closed table)'}</option>`); });
+  return opts.join('');
+}
+function admTables() {
+  const a = S.admin;
+  return `<section class="block"><div class="block-head"><h2>TABLES</h2><button class="btn btn-red btn-sm" data-a="add-table">ADD TABLE</button></div>
+    <p class="fine">Capacity, names and order update the seating map for everyone. Removing seats that are taken asks before anyone is unseated.</p>
+    ${a.tables.map(t => { const n = a.seating.filter(s => s.tableId === t.id).length; return `<div class="edit-card" data-row="${esc(t.id)}">
+      <div class="form-grid">
+        <div class="fl"><label for="tn-${esc(t.id)}">NAME</label><input class="field" id="tn-${esc(t.id)}" name="name" value="${esc(t.name)}" maxlength="40"></div>
+        <div class="fl"><label for="tc-${esc(t.id)}">SEATS</label><div class="stepper"><button type="button" data-step="-1" aria-label="Fewer seats">−</button><input id="tc-${esc(t.id)}" name="capacity" type="number" min="1" max="40" value="${t.capacity}"><button type="button" data-step="1" aria-label="More seats">+</button></div></div>
+        <div class="fl"><label>STATUS</label><label class="switch"><input type="checkbox" name="active" ${t.active ? 'checked' : ''}> ${t.active ? 'OPEN' : 'CLOSED'}</label></div>
+      </div>
+      <div class="acts"><span class="fine" style="margin-right:auto">${n} seated</span><button class="mini-btn danger" data-a="del-table">DELETE</button><button class="mini-btn" data-a="save-table">SAVE</button></div>
+    </div>`; }).join('')}</section>`;
+}
+function admPotluck() {
+  const a = S.admin;
+  const cats = [...new Set(a.items.map(i => i.category))];
+  const claims = a.people.filter(p => p.item);
+  return `<section class="block"><div class="block-head"><h2>ITEMS</h2><button class="btn btn-red btn-sm" data-a="add-item">ADD ITEM</button></div>
+    <p class="fine">“Target” is how many bringers feels covered. “Max” closes the item when reached (leave blank for no limit).</p>
+    ${a.items.map(i => `<div class="edit-card" data-row="${esc(i.id)}">
+      <div class="form-grid">
+        <div class="fl"><label for="in-${i.id}">NAME</label><input class="field" id="in-${i.id}" name="name" value="${esc(i.name)}" maxlength="60"></div>
+        <div class="fl"><label for="ic-${i.id}">CATEGORY</label><input class="field" id="ic-${i.id}" name="category" value="${esc(i.category)}" list="cats"></div>
+        <div class="fl"><label for="is-${i.id}">SERVES</label><input class="field" id="is-${i.id}" name="serving_size" value="${esc(i.serving)}" maxlength="30"></div>
+        <div class="fl"><label for="it-${i.id}">TARGET</label><input class="field" id="it-${i.id}" name="target" type="number" min="0" value="${i.target}"></div>
+        <div class="fl"><label for="im-${i.id}">MAX</label><input class="field" id="im-${i.id}" name="max_people" type="number" min="1" value="${i.max || ''}" placeholder="No limit"></div>
+        <div class="fl wide"><label for="id-${i.id}">DESCRIPTION</label><input class="field" id="id-${i.id}" name="description" value="${esc(i.description)}" maxlength="200"></div>
+      </div>
+      <div class="acts"><span class="fine" style="margin-right:auto">${i.count} bringing</span>
+        <label class="switch"><input type="checkbox" name="needed" ${i.needed ? 'checked' : ''}> NEEDED</label>
+        <label class="switch"><input type="checkbox" name="active" ${i.active ? 'checked' : ''}> ACTIVE</label>
+        <button class="mini-btn danger" data-a="del-item">DELETE</button><button class="mini-btn" data-a="save-item">SAVE</button></div>
+    </div>`).join('')}
+    <datalist id="cats">${cats.map(c => `<option value="${esc(c)}">`).join('')}</datalist></section>
+    <section class="block"><div class="block-head"><h2>CONTRIBUTIONS <span class="fine">· ${claims.length}</span></h2></div>
+      <div class="rows">${claims.map(p => `<div class="row"><span class="who">${esc(p.name)} <small>${esc(p.item.name)} · ${esc(p.item.serving)}</small></span><span class="acts"><button class="mini-btn" data-a="assign-item" data-u="${esc(p.uid)}">CHANGE</button><button class="mini-btn danger" data-a="clear-item" data-u="${esc(p.uid)}">REMOVE</button></span></div>`).join('') || '<div class="row"><span class="who dim">NONE YET</span></div>'}</div></section>`;
+}
+function admContent() {
+  const s = S.admin.settings;
+  const faq = S.ui.faqDraft || (S.ui.faqDraft = S.admin.faq.map(q => Object.assign({}, q)));
+  const f = (k, label, ta) => `<div class="fl ${ta ? 'wide' : ''}"><label for="set-${k}">${label}</label>${ta ? `<textarea class="field" id="set-${k}" name="${k}">${esc(s[k])}</textarea>` : `<input class="field" id="set-${k}" name="${k}" value="${esc(s[k])}">`}</div>`;
+  return `<section class="block" id="contentForm"><div class="block-head"><h2>EVENT CONTENT</h2><button class="btn btn-red btn-sm" data-a="save-content">SAVE CONTENT</button></div>
+    <div class="edit-card"><div class="form-grid">
+      ${f('event_name', 'EVENT NAME')}${f('short_name', 'NAV LABEL')}${f('subtitle', 'SUBTITLE')}${f('event_date_display', 'DATE (AS SHOWN)')}${f('start_time', 'TIME')}${f('location', 'LOCATION')}
+      ${f('welcome_message', 'HOME · A NOTE FROM THE HOST', 1)}${f('remarks_message', 'HOME · BEFORE WE ROLL', 1)}${f('host_message', 'INFO · ONE MORE THING', 1)}
+    </div>
+    <div class="acts" style="justify-content:flex-start">
+      <label class="switch"><input type="checkbox" name="seating_open" ${s.seating_open ? 'checked' : ''}> SEATING OPEN</label>
+      <label class="switch"><input type="checkbox" name="potluck_open" ${s.potluck_open ? 'checked' : ''}> POTLUCK OPEN</label>
+      <div class="fl" style="min-width:220px"><label for="set-access">WHO CAN SIGN IN</label><select class="field" id="set-access" name="access_mode"><option value="guestlist" ${s.access_mode !== 'open' ? 'selected' : ''}>Guest List tab only</option><option value="open" ${s.access_mode === 'open' ? 'selected' : ''}>Any Google account</option></select></div>
+    </div></div></section>
+    <section class="block" id="faqForm"><div class="block-head"><h2>FAQ</h2><div style="display:flex;gap:8px"><button class="mini-btn" data-a="add-faq">ADD QUESTION</button><button class="btn btn-red btn-sm" data-a="save-faq">SAVE FAQ</button></div></div>
+    ${faq.map((q, i) => `<div class="edit-card" data-faqrow="${i}"><div class="form-grid">
+      <div class="fl wide"><label for="fq-${i}">QUESTION</label><input class="field" id="fq-${i}" name="question" value="${esc(q.question)}"></div>
+      <div class="fl wide"><label for="fa-${i}">ANSWER</label><textarea class="field" id="fa-${i}" name="answer" style="min-height:80px">${esc(q.answer)}</textarea></div></div>
+      <div class="acts"><label class="switch" style="margin-right:auto"><input type="checkbox" name="active" ${q.active !== false ? 'checked' : ''}> SHOWN</label>
+        <button class="mini-btn" data-a="faq-up" ${i === 0 ? 'disabled' : ''} aria-label="Move up">↑</button><button class="mini-btn" data-a="faq-down" ${i === faq.length - 1 ? 'disabled' : ''} aria-label="Move down">↓</button><button class="mini-btn danger" data-a="faq-del">REMOVE</button></div></div>`).join('')}
+    </section>`;
+}
+function admPeople() {
+  const a = S.admin;
+  return `<section class="block"><div class="block-head"><h2>PARTICIPANTS <span class="fine">· ${a.people.length}</span></h2></div>
+    <p class="fine">Guests see first names only. To change the name shown publicly, edit display_name on the Participants tab. To let someone in, add their email on the Guest List tab.</p>
+    <div class="tbl-wrap"><table class="ppl"><thead><tr><th>NAME</th><th>SHOWN AS</th><th>EMAIL</th><th>SEAT</th><th>BRINGING</th><th>READY</th><th>LAST SEEN</th></tr></thead><tbody>
+    ${a.people.map(p => `<tr><td>${esc(p.name)}</td><td class="dim">${esc(p.first)}</td><td class="dim">${esc(p.email)}</td><td>${p.seat ? esc(p.seat.table) + ' · ' + pad2(p.seat.seat) : '<span class="dim">—</span>'}</td><td>${p.item ? esc(p.item.name) : '<span class="dim">—</span>'}</td><td>${p.ready ? '<span class="dot-ok" title="Ready"></span>' : ''}</td><td class="dim">${p.lastSeen ? ago(p.lastSeen) : ''}</td></tr>`).join('')}
+    </tbody></table></div></section>`;
+}
+function admExport() {
+  return `<section class="export-grid">
+    <div class="edit-card"><p class="eyebrow">CSV</p><h2 class="h2">Seating</h2><p class="fine">Participant, Table, Seat — sorted by table and seat.</p><div class="acts" style="justify-content:flex-start"><button class="btn btn-red btn-sm" data-a="export-seating">EXPORT SEATING</button></div></div>
+    <div class="edit-card"><p class="eyebrow">CSV</p><h2 class="h2">Potluck</h2><p class="fine">Participant, Contribution, Serving Size.</p><div class="acts" style="justify-content:flex-start"><button class="btn btn-red btn-sm" data-a="export-potluck">EXPORT POTLUCK</button></div></div>
+  </section><p class="fine">The same data is always live in the Seating and Potluck tabs of your Google Sheet.</p>`;
+}
+const csvCell = v => /[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v);
+const toCSV = rows => rows.map(r => r.map(csvCell).join(',')).join('\n');
+function exportCSV(kind) {
+  const a = S.admin;
+  const order = {}; a.tables.forEach((t, i) => { order[t.id] = i; });
+  let rows, name;
+  if (kind === 'seating') {
+    rows = [['Participant', 'Table', 'Seat']].concat(a.people.filter(p => p.seat).sort((x, y) => (order[x.seat.tableId] - order[y.seat.tableId]) || x.seat.seat - y.seat.seat)
+      .map(p => [p.name, titleCase(p.seat.table), 'Seat ' + pad2(p.seat.seat)]));
+    name = 'seating.csv';
+  } else {
+    rows = [['Participant', 'Contribution', 'Serving Size']].concat(a.people.filter(p => p.item).sort((x, y) => x.item.name.localeCompare(y.item.name)).map(p => [p.name, p.item.name, p.item.serving]));
+    name = 'potluck.csv';
+  }
+  const csv = toCSV(rows);
+  panel({
+    eyebrow: 'EXPORT', title: name, body: `${rows.length - 1} rows.`,
+    html: `<textarea class="field csv" id="csvOut" readonly>${esc(csv)}</textarea>`,
+    confirm: 'DOWNLOAD CSV', cancel: 'CLOSE',
+    action: async () => {
+      try {
+        const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = Object.assign(document.createElement('a'), { href: url, download: name });
+        document.body.appendChild(link); link.click(); link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+      } catch (e) {}
+      return { ok: true };
+    },
+  });
+  const ta = $('#csvOut');
+  const copy = document.createElement('button'); copy.className = 'btn btn-line'; copy.textContent = 'COPY TO CLIPBOARD';
+  copy.onclick = () => {
+    const done = () => { copy.textContent = 'COPIED'; };
+    if (navigator.clipboard) navigator.clipboard.writeText(csv).then(done, () => { ta.select(); });
+    else { ta.select(); }
+  };
+  $('.panel .pacts').insertBefore(copy, $('.panel [data-cancel]'));
+}
+
+async function adminCall(action, payload, okText, warnTitle) {
+  const r = await api(action, payload);
+  if (r.ok) { if (okText) toast(okText, 'ok'); S.ui.faqDraft = null; renderView(false); return r; }
+  if (r.code === 'HAS_PARTICIPANTS') {
+    const names = (r.affected || []).join(', ');
+    panel({
+      eyebrow: 'HEADS UP', title: warnTitle || 'People are seated here', danger: true,
+      body: `${esc(names)} ${r.affected.length === 1 ? 'is' : 'are'} affected. They keep their accounts and other picks, and can choose again. This can’t be undone.`,
+      confirm: 'CONTINUE ANYWAY',
+      action: () => api(action, Object.assign({}, payload, { force: true })),
+      after: () => { toast(okText || 'Saved.', 'ok'); renderView(false); },
+    });
+    return r;
+  }
+  toast(msgOf(r), 'error');
+  return r;
+}
+function readRow(row) {
+  const o = {};
+  $$('input,textarea,select', row).forEach(i => { if (!i.name) return; o[i.name] = i.type === 'checkbox' ? i.checked : i.value; });
+  return o;
+}
+function syncFaqDraft() {
+  if (!S.ui.faqDraft) return;
+  $$('[data-faqrow]').forEach(r => { const i = +r.dataset.faqrow; Object.assign(S.ui.faqDraft[i], readRow(r)); });
+}
+async function onAdmin(btn) {
+  const a = btn.dataset.a, row = btn.closest('[data-row]');
+  const A = S.admin;
+  const person = uid => A.people.find(p => p.uid === uid) || { name: 'Guest' };
+  switch (a) {
+    case 'move': {
+      const p = person(btn.dataset.u);
+      return panel({ eyebrow: 'MOVE', title: `Seat ${esc(p.name)}`, body: p.seat ? `Currently ${esc(p.seat.table)} · Seat ${pad2(p.seat.seat)}.` : 'Not seated yet.',
+        html: `<select class="field" id="mvSeat">${openSeatOptions()}</select>`, confirm: 'MOVE SEAT', busyText: 'CHECKING THE SEATS...',
+        read: pn => $('#mvSeat', pn).value, action: v => { const [t, n] = String(v).split('|'); return api('adminMoveSeat', { userId: p.uid, tableId: t, seat: +n }); },
+        success: 'SEATED', after: () => renderView(false) });
+    }
+    case 'assign': {
+      const opts = A.people.filter(p => !p.seat).map(p => `<option value="${esc(p.uid)}">${esc(p.name)}</option>`).join('');
+      const t = A.tables.find(x => x.id === btn.dataset.t);
+      return panel({ eyebrow: 'ASSIGN', title: `${esc(t.name)} · Seat ${pad2(btn.dataset.n)}`, html: `<select class="field" id="asUser">${opts}</select>`, confirm: 'ASSIGN',
+        read: pn => $('#asUser', pn).value, action: uid => api('adminMoveSeat', { userId: uid, tableId: t.id, seat: +btn.dataset.n }), success: 'SEATED', after: () => renderView(false) });
+    }
+    case 'clear': {
+      const p = person(btn.dataset.u);
+      return panel({ eyebrow: 'CLEAR SEAT', title: `Unseat ${esc(p.name)}?`, body: `${esc(p.seat.table)} · Seat ${pad2(p.seat.seat)} becomes available.`, confirm: 'CLEAR SEAT', danger: true,
+        action: () => api('adminClearSeat', { userId: p.uid }), after: () => { toast('Seat cleared.', 'ok'); renderView(false); } });
+    }
+    case 'add-table': return adminCall('adminSaveTable', { table: { capacity: 10 } }, 'Table added.');
+    case 'save-table': {
+      const v = readRow(row);
+      return adminCall('adminSaveTable', { table: { id: row.dataset.row, name: v.name, capacity: +v.capacity, active: v.active } }, 'Table saved.', 'Fewer seats than people seated');
+    }
+    case 'del-table': {
+      const t = A.tables.find(x => x.id === row.dataset.row);
+      return panel({ eyebrow: 'DELETE TABLE', title: `Delete ${esc(t.name)}?`, body: 'The table disappears from the seating map for everyone.', danger: true, confirm: 'DELETE',
+        action: () => api('adminDeleteTable', { id: t.id }),
+        after: () => { toast('Table deleted.', 'ok'); renderView(false); },
+        fail: r => r.code === 'HAS_PARTICIPANTS' ? adminCall('adminDeleteTable', { id: t.id }, 'Table deleted.', `${t.name} has people seated`) : toast(msgOf(r), 'error') });
+    }
+    case 'add-item': {
+      return panel({ eyebrow: 'NEW ITEM', title: 'Add a potluck item', html: `<input class="field" id="niName" placeholder="Name (e.g. Fruit)" maxlength="60"><input class="field" id="niCat" placeholder="Category (e.g. FOOD)" value="FOOD">`,
+        confirm: 'ADD ITEM', read: pn => ({ name: $('#niName', pn).value.trim(), category: $('#niCat', pn).value.trim() }),
+        action: v => v.name ? api('adminSaveItem', { item: v }) : Promise.resolve({ ok: false, code: 'INVALID' }), after: () => { toast('Item added.', 'ok'); renderView(false); } });
+    }
+    case 'save-item': {
+      const v = readRow(row);
+      return adminCall('adminSaveItem', { item: Object.assign({ id: row.dataset.row }, v) }, 'Item saved.');
+    }
+    case 'del-item': {
+      const it = A.items.find(x => x.id === row.dataset.row);
+      return panel({ eyebrow: 'DELETE ITEM', title: `Delete ${esc(it.name)}?`, body: 'It disappears from the potluck for everyone.', danger: true, confirm: 'DELETE',
+        action: () => api('adminDeleteItem', { id: it.id }), after: () => { toast('Item deleted.', 'ok'); renderView(false); },
+        fail: r => r.code === 'HAS_PARTICIPANTS' ? adminCall('adminDeleteItem', { id: it.id }, 'Item deleted.', `People are bringing ${it.name}`) : toast(msgOf(r), 'error') });
+    }
+    case 'assign-item': {
+      const p = person(btn.dataset.u);
+      const opts = A.items.filter(i => i.active).map(i => `<option value="${esc(i.id)}" ${p.item && p.item.itemId === i.id ? 'selected' : ''}>${esc(i.name)} · ${esc(i.category)}</option>`).join('');
+      return panel({ eyebrow: 'CHANGE CONTRIBUTION', title: esc(p.name), html: `<select class="field" id="aiItem">${opts}</select>`, confirm: 'SAVE',
+        read: pn => $('#aiItem', pn).value, action: id => api('adminAssignItem', { userId: p.uid, itemId: id }), after: () => { toast('Contribution changed.', 'ok'); renderView(false); } });
+    }
+    case 'clear-item': {
+      const p = person(btn.dataset.u);
+      return panel({ eyebrow: 'REMOVE', title: `Remove ${esc(p.name)}’s ${esc(p.item.name)}?`, danger: true, confirm: 'REMOVE',
+        action: () => api('adminClearClaim', { userId: p.uid }), after: () => { toast('Contribution removed.', 'ok'); renderView(false); } });
+    }
+    case 'save-content': {
+      const v = readRow($('#contentForm'));
+      return adminCall('adminSaveSettings', { settings: v }, 'Content saved. Guests see it on their next refresh.');
+    }
+    case 'add-faq': syncFaqDraft(); S.ui.faqDraft.push({ question: '', answer: '', active: true }); return renderView(false);
+    case 'faq-up': case 'faq-down': case 'faq-del': {
+      syncFaqDraft();
+      const i = +btn.closest('[data-faqrow]').dataset.faqrow, f = S.ui.faqDraft;
+      if (a === 'faq-del') f.splice(i, 1);
+      else { const j = a === 'faq-up' ? i - 1 : i + 1; [f[i], f[j]] = [f[j], f[i]]; }
+      return renderView(false);
+    }
+    case 'save-faq': syncFaqDraft(); return adminCall('adminSaveFaq', { faq: S.ui.faqDraft }, 'FAQ saved.');
+    case 'export-seating': return exportCSV('seating');
+    case 'export-potluck': return exportCSV('potluck');
+  }
+}
+
+/* ---------------- one delegated click handler ---------------- */
+document.addEventListener('click', e => {
+  const seat = e.target.closest('.seat'); if (seat) return onSeat(seat);
+  const item = e.target.closest('[data-item]'); if (item) return onItem(item.dataset.item);
+  const faq = e.target.closest('[data-faq]');
+  if (faq) {
+    const i = +faq.dataset.faq, qa = faq.parentElement;
+    S.ui.openFaq.has(i) ? S.ui.openFaq.delete(i) : S.ui.openFaq.add(i);
+    qa.classList.toggle('open'); faq.setAttribute('aria-expanded', qa.classList.contains('open'));
+    return;
+  }
+  const at = e.target.closest('[data-atab]'); if (at) { S.ui.adminTab = at.dataset.atab; S.ui.faqDraft = null; renderView(false); return; }
+  const step = e.target.closest('[data-step]');
+  if (step) { const inp = step.parentElement.querySelector('input'); inp.value = Math.max(1, Math.min(40, (+inp.value || 0) + +step.dataset.step)); return; }
+  const adm = e.target.closest('[data-a]'); if (adm) return onAdmin(adm);
+  const act = e.target.closest('[data-act]');
+  if (act) {
+    const k = act.dataset.act;
+    if (k === 'change-seat') { const tb = $('#tables'); tb.scrollIntoView({ behavior: 'smooth', block: 'start' }); tb.classList.add('choosing'); setTimeout(() => tb.classList.remove('choosing'), 2600); toast('Pick any open chair to move.'); }
+    if (k === 'leave-seat') panel({ eyebrow: 'GIVE UP SEAT', title: 'Give up your seat?', body: 'It opens up for someone else. You can pick a seat again later if one is free.', confirm: 'GIVE UP SEAT', danger: true,
+      action: () => api('releaseSeat'), after: () => toast('Your seat is open again.', 'ok') });
+    if (k === 'change-item') $('#plist').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (k === 'ready') playComplete();
+  }
+});
+
+/* ---------------- realtime-ish: poll while visible ---------------- */
+function startPolling() {
+  clearInterval(S.poll);
+  S.poll = setInterval(() => {
+    if (document.hidden || S.busy || panelEl || S.route === 'admin' || S.route === 'info') return;
+    api('state');
+  }, CONFIG.POLL_MS);
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden && S.inApp && S.route !== 'admin') api('state'); });
+
+/* ---------------- boot ---------------- */
+async function boot() {
+  $('#gateDate').textContent = CONFIG.ENVELOPE_DATE;
+  $('#cardMark').innerHTML = emblemSVG({ uid: 'card', ring: false });
+  const fav = document.createElement('link'); fav.rel = 'icon'; fav.href = 'data:image/svg+xml,' + encodeURIComponent(emblemFile(false));
+  document.head.appendChild(fav);
+  bindEnvelope();
+  $('#enterBtn').onclick = () => enterApp(false);
+  if (store.get('dicegame_flash')) { store.del('dicegame_flash'); setTimeout(() => toast('Please sign in again.'), 600); }
+
+  setGate(loaderHTML('PREPARING THE TABLE...'));
+  if (!(await ensureBackend())) {
+    setGate(`<p class="gate-note">This copy isn’t connected yet. Add your API URL and Google Client ID at the top of the script in index.html (see SETUP.md).</p>`);
+    return;
+  }
+  S.session = store.get(SKEY);
+  if (S.session) {
+    const r = await api('state');
+    if (r.ok) return gateReady(true);
+    S.session = null; store.del(SKEY);
+  }
+  showSignIn();
+}
+boot();
+})();
+</script>
+</body>
+</html>
