@@ -256,6 +256,9 @@ a.scard:hover{border-color:var(--line-2);transform:translateY(-2px)}
 .pick .pv{font-size:clamp(18px,2.2vw,22px);font-weight:700;letter-spacing:-.02em}
 .pick:not(.on) .pv{color:var(--faint);font-weight:500}
 .pick .ps{font-size:12.5px;color:var(--muted)}
+.rule{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;font-size:15px;color:var(--ivory)}
+.rule b{font-size:9.5px;letter-spacing:.24em;color:var(--gold);font-weight:700}
+.rule span{color:var(--faint);font-size:13px}
 .pcat-head .req{margin-left:auto;font-size:9.5px;letter-spacing:.24em;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted)}
 .pcat-head .req.must{border-color:rgba(181,33,40,.6);color:#f0b9bb}
 .pcat-head .req.ok{border-color:rgba(199,164,91,.5);color:var(--gold)}
@@ -1013,7 +1016,7 @@ function viewHome(st) {
       </a>
       <a class="scard ${pd ? 'done' : ''}" href="#potluck">
         <span class="k">YOUR CONTRIBUTION</span>
-        ${c ? `<span class="v">${esc(c.name)}</span><span class="v2">${servesLine(c.serving)}${more.length ? ' · + ' + esc(more.map(x => x.name).join(', ')) : ''}</span>${pd ? '' : '<span class="cta arrow">PICK A FOOD ITEM</span>'}` : `<span class="v dim">Not chosen</span><span class="cta arrow">CHOOSE WHAT TO BRING</span>`}
+        ${c ? `<span class="v">${esc(c.name)}</span><span class="v2">${servesLine(c.serving)}${more.length ? ' · + ' + esc(more.map(x => x.name).join(', ')) : ''}</span>${pd ? '' : '<span class="cta arrow">FINISH YOUR PICKS</span>'}` : `<span class="v dim">Not chosen</span><span class="cta arrow">CHOOSE WHAT TO BRING</span>`}
       </a>
       <a class="scard ${me.ready && done ? 'done' : ''}" href="#review">
         <span class="k">EVENT STATUS</span>
@@ -1164,8 +1167,12 @@ function potluckOf(st) {
   st.items.forEach(it => { if (!cats.includes(it.category)) cats.push(it.category); });
   const missing = req.filter(c => cats.includes(c) && !mine.some(m => m.category === c));
   const optional = cats.filter(c => !req.includes(c));
-  return { req, mine, cats, missing, optional, done: mine.length > 0 && !missing.length };
+  const alt = parseInt(st.settings.potluck_alternative, 10) || 0;          // e.g. 2 = a drink + a table item instead of food
+  const otherPicks = mine.filter(m => !req.includes(m.category)).length;
+  const viaReq = mine.length > 0 && !missing.length, viaAlt = alt > 0 && otherPicks >= alt;
+  return { req, mine, cats, missing, optional, alt, otherPicks, viaReq, viaAlt, done: viaReq || viaAlt };
 }
+const oneOf = c => (c.endsWith('S') ? 'a ' + c.slice(0, -1) : 'a ' + c + ' item').toLowerCase();
 const listWords = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
 function itemStatus(it) {
   if (it.max && it.count >= it.max) return ['full', 'FULL'];
@@ -1177,23 +1184,30 @@ function viewPotluck(st) {
   const open = st.settings.potluck_open, P = potluckOf(st);
   const groups = P.cats.map(name => ({ name, items: st.items.filter(i => i.category === name) }));
   const tc = c => titleCase(c);
-  const hint = P.done
-    ? (P.optional.length ? `You’re covered. If you can, add ${listWords(P.optional.map(c => c.endsWith('S') ? 'a ' + c.slice(0, -1).toLowerCase() : 'a ' + c.toLowerCase() + ' item'))} too. One per category.` : 'You’re covered.')
-    : `Pick 1 ${listWords(P.missing.map(c => tc(c).toLowerCase()))} item to lock in.${P.optional.length ? ` ${listWords(P.optional.map(tc))} ${P.optional.length > 1 ? 'are' : 'is'} optional, one each.` : ''}`;
+  const reqWords = listWords(P.req.map(oneOf));
+  const altLeft = P.optional.filter(c => !P.mine.some(m => m.category === c));
+  const hint = P.viaReq
+    ? (altLeft.length ? `You’re covered. If you can, add ${listWords(altLeft.map(oneOf))} too. One per category.` : 'You’re covered. Thank you!')
+    : P.viaAlt
+      ? `You’re covered with ${listWords(P.mine.filter(m => !P.req.includes(m.category)).map(m => m.name))}. ${reqWords.charAt(0).toUpperCase() + reqWords.slice(1)} is welcome too.`
+      : P.alt && P.otherPicks
+        ? `Add ${listWords(altLeft.slice(0, P.alt - P.otherPicks).map(oneOf))} to lock in, or pick ${reqWords} instead.`
+        : P.alt ? `To lock in, bring ${reqWords}, or ${listWords(P.optional.slice(0, P.alt).map(oneOf))}.` : `Pick ${reqWords} to lock in.`;
   return `<div class="page">
     <section class="shead"><p class="eyebrow">DICE • FOOD • FRIENDS</p><h1 class="display">THE POTLUCK</h1><p class="lede">Bring something good to the table.</p></section>
     ${!open ? '<p class="banner">The potluck is locked by the host. Your picks are saved.</p>' : ''}
+    ${P.alt ? `<p class="rule"><b>OPTION A</b> ${esc(P.req.map(c => '1 ' + oneOf(c).slice(2)).join(' + '))} <span>or</span> <b>OPTION B</b> ${esc(P.optional.slice(0, P.alt).map(c => '1 ' + oneOf(c).slice(2)).join(' + '))} <span>· one item per category</span></p>` : ''}
     <section class="contrib ${P.mine.length ? '' : 'empty'}">
       <div class="what"><span class="k">YOUR CONTRIBUTION</span>
         <div class="picks">${P.cats.map(c => { const m = P.mine.find(x => x.category === c); const r = P.req.includes(c);
-          return `<div class="pick ${m ? 'on' : ''}"><span class="pk">${esc(c)} · ${r ? (m ? 'REQUIRED' : '<b>REQUIRED</b>') : 'OPTIONAL'}</span><span class="pv">${m ? esc(m.name) : (r ? 'Not chosen' : '—')}</span>${m && m.serving ? `<span class="ps">${servesLine(m.serving)}</span>` : ''}</div>`; }).join('')}</div>
+          return `<div class="pick ${m ? 'on' : ''}"><span class="pk">${esc(c)}${m ? '' : P.done ? ' · OPTIONAL' : P.alt ? (r ? ' · <b>OPTION A</b>' : ' · <b>OPTION B</b>') : r ? ' · <b>REQUIRED</b>' : ' · OPTIONAL'}</span><span class="pv">${m ? esc(m.name) : 'Not chosen'}</span>${m && m.serving ? `<span class="ps">${servesLine(m.serving)}</span>` : ''}</div>`; }).join('')}</div>
         <span class="s">${esc(hint)}</span></div>
       ${P.done ? '<div class="acts"><a class="link arrow" href="#review">REVIEW YOUR NIGHT</a></div>' : ''}
     </section>
     <div id="plist" style="display:flex;flex-direction:column;gap:clamp(40px,6vw,60px)">
     ${groups.map(g => { const r = P.req.includes(g.name), has = P.mine.some(m => m.category === g.name);
       return `<section class="pcat"><div class="pcat-head"><h2>${esc(g.name)}</h2><span>${g.items.reduce((s, i) => s + i.count, 0)} bringing</span>
-        <span class="req ${has ? 'ok' : r ? 'must' : ''}">${has ? 'PICKED · 1 OF 1' : r ? 'REQUIRED · PICK 1' : 'OPTIONAL · UP TO 1'}</span></div>
+        <span class="req ${has ? 'ok' : !P.done ? 'must' : ''}">${has ? 'PICKED · 1 OF 1' : P.done ? 'OPTIONAL · UP TO 1' : P.alt ? (r ? 'OPTION A · PICK 1' : 'OPTION B · PICK 1') : r ? 'REQUIRED · PICK 1' : 'OPTIONAL · UP TO 1'}</span></div>
       <div class="pgrid">${g.items.map(it => itemCard(it, open, P)).join('')}</div></section>`; }).join('')}
     </div>
     ${st.contributors.length ? `<section class="block"><p class="eyebrow">WHO’S BRINGING WHAT</p><div class="ledger">${st.contributors.map(x => `<div><span>${esc(x.name)}</span><span>${esc(x.item)}</span></div>`).join('')}</div></section>` : ''}
@@ -1228,7 +1242,8 @@ function onItem(id, mode) {
   if (mode === 'remove') {
     return panel({
       eyebrow: 'REMOVE', title: `Remove ${esc(it.name)} from your list?`,
-      body: required ? `${esc(titleCase(it.category))} is required, so pick another ${esc(it.category.toLowerCase())} item before you lock in.` : 'Its spot opens up for someone else.',
+      body: (() => { const rest = P.mine.filter(m => m.itemId !== id); const ok = rest.some(m => P.req.includes(m.category)) || (P.alt && rest.filter(m => !P.req.includes(m.category)).length >= P.alt);
+        return ok || !P.done ? 'Its spot opens up for someone else.' : 'Its spot opens up for someone else. You’ll need another pick before you can lock in.'; })(),
       confirm: 'REMOVE', danger: true, busyText: 'SETTING THE TABLE...',
       action: () => api('releaseItem', { itemId: id }), after: () => toast(`${it.name} removed.`, 'ok'),
       failText: 'Your contribution could not be saved.',
@@ -1238,7 +1253,7 @@ function onItem(id, mode) {
     eyebrow: cur ? `CHANGE YOUR ${esc(it.category)} PICK` : `THE POTLUCK · ${esc(it.category)}`,
     title: cur ? `Switch from ${esc(cur.name)} to ${esc(it.name)}?` : `Bring ${esc(it.name)} for ${serves}?`,
     body: cur ? `One ${esc(it.category.toLowerCase())} item per person. ${esc(it.name)} · for ${serves}.`
-      : required ? 'This covers your required pick. You can change it any time before the night.' : 'An optional extra. Thank you! You can remove it any time.',
+      : P.done ? 'An extra on top of what you’re bringing. Thank you! You can remove it any time.' : required ? 'This covers your potluck. You can change it any time before the night.' : (P.alt && P.otherPicks + 1 >= P.alt ? 'With this you’re covered. You can change it any time before the night.' : `One more from another category (or ${esc(listWords(P.req.map(oneOf)))}) and you’re covered.`),
     confirm: 'CONFIRM',
     busyText: 'SETTING THE TABLE...',
     success: `YOU’RE BRINGING ${esc(it.name.toUpperCase())}`,
@@ -1259,7 +1274,7 @@ function viewReview(st) {
     <section class="ticket">
       <div class="trow"><span class="k">YOUR SEAT</span>${seat ? `<span class="v">${esc(seat.tableName)}<small>Seat ${pad2(seat.seat)}</small></span>` : '<span class="v dim">Not selected</span>'}
         <a class="link" href="#seating">${seat ? 'EDIT SEAT' : 'CHOOSE SEAT'}</a></div>
-      <div class="trow"><span class="k">YOUR CONTRIBUTION</span>${c ? `<span class="v">${esc(c.name.toUpperCase())}<small>${servesLine(c.serving)}${extra.length ? ' · plus ' + esc(extra.map(x => x.name).join(', ')) : ''}</small>${me.potluckDone ? '' : '<small>A food item is still needed.</small>'}</span>` : '<span class="v dim">Not chosen</span>'}
+      <div class="trow"><span class="k">YOUR CONTRIBUTION</span>${c ? `<span class="v">${esc(c.name.toUpperCase())}<small>${servesLine(c.serving)}${extra.length ? ' · plus ' + esc(extra.map(x => x.name).join(', ')) : ''}</small>${me.potluckDone ? '' : '<small>Still needed: a food item, or a drink and a table item.</small>'}</span>` : '<span class="v dim">Not chosen</span>'}
         <a class="link" href="#potluck">${c ? 'EDIT CONTRIBUTION' : 'CHOOSE'}</a></div>
       <div class="trow"><span class="k">EVENT</span><span class="v">${esc(st.settings.event_date_display)}<small>${esc(st.settings.start_time)} · ${esc(st.settings.location)}</small></span><span></span></div>
     </section>
@@ -1428,7 +1443,7 @@ function admPeople() {
   return `<section class="block"><div class="block-head"><h2>PARTICIPANTS <span class="fine">· ${a.people.length}</span></h2></div>
     <p class="fine">Guests see first names only. To change the name shown publicly, edit display_name on the Participants tab. To let someone in, add their email on the Guest List tab.</p>
     <div class="tbl-wrap"><table class="ppl"><thead><tr><th>NAME</th><th>SHOWN AS</th><th>EMAIL</th><th>SEAT</th><th>BRINGING</th><th>READY</th><th>LAST SEEN</th></tr></thead><tbody>
-    ${a.people.map(p => `<tr><td>${esc(p.name)}</td><td class="dim">${esc(p.first)}</td><td class="dim">${esc(p.email)}</td><td>${p.seat ? esc(p.seat.table) + ' · ' + pad2(p.seat.seat) : '<span class="dim">—</span>'}</td><td>${(p.items || []).length ? esc(p.items.map(i => i.name).join(', ')) + (p.potluckDone ? '' : ' <span class="dim">(no food)</span>') : '<span class="dim">—</span>'}</td><td>${p.ready ? '<span class="dot-ok" title="Ready"></span>' : ''}</td><td class="dim">${p.lastSeen ? ago(p.lastSeen) : ''}</td></tr>`).join('')}
+    ${a.people.map(p => `<tr><td>${esc(p.name)}</td><td class="dim">${esc(p.first)}</td><td class="dim">${esc(p.email)}</td><td>${p.seat ? esc(p.seat.table) + ' · ' + pad2(p.seat.seat) : '<span class="dim">—</span>'}</td><td>${(p.items || []).length ? esc(p.items.map(i => i.name).join(', ')) + (p.potluckDone ? '' : ' <span class="dim">(incomplete)</span>') : '<span class="dim">—</span>'}</td><td>${p.ready ? '<span class="dot-ok" title="Ready"></span>' : ''}</td><td class="dim">${p.lastSeen ? ago(p.lastSeen) : ''}</td></tr>`).join('')}
     </tbody></table></div></section>`;
 }
 function admExport() {
