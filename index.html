@@ -107,7 +107,8 @@ img{max-width:100%}
 .gate-welcome{font-size:11px;letter-spacing:.3em;color:var(--muted);font-weight:600}
 .btn-open{min-width:168px}
 .gate-note{max-width:34ch;color:var(--muted);font-size:13.5px}
-.gsi-slot{min-height:44px;display:grid;place-items:center}
+.gsi-slot{min-height:44px;display:grid;place-items:center;color-scheme:light;background:transparent}
+.gsi-slot iframe{color-scheme:light}   /* matching scheme = no white box behind Google's button */
 .particle{position:absolute;width:4px;height:4px;border-radius:50%;background:#F0D9A0;box-shadow:0 0 8px 2px rgba(232,200,130,.6);pointer-events:none;z-index:30}
 .bloom{position:fixed;inset:0;pointer-events:none;z-index:25;opacity:0;background:radial-gradient(circle at 50% 42%,rgba(232,200,130,.45),rgba(143,23,29,.18) 38%,transparent 70%)}
 
@@ -721,7 +722,7 @@ function showSignIn() {
   setGate(`<div class="gsi-slot" id="gsi"></div><p class="fine">Private event · sign in with Google to open</p>`);
   loadGsi().then(() => {
     google.accounts.id.initialize({ client_id: CONFIG.GOOGLE_CLIENT_ID, callback: r => onCredential(r.credential), ux_mode: 'popup', auto_select: false, itp_support: true });
-    google.accounts.id.renderButton($('#gsi'), { type: 'standard', theme: 'filled_black', size: 'large', shape: 'pill', text: 'continue_with', logo_alignment: 'left', width: 264 });
+    google.accounts.id.renderButton($('#gsi'), { type: 'standard', theme: 'filled_black', size: 'large', shape: 'pill', text: 'continue_with', logo_alignment: 'left', width: 264, locale: 'en' });
   }).catch(() => setGate(`<p class="gate-note">Google sign-in didn't load. Check your connection, then reload the page.</p>`));
 }
 function loadGsi() {
