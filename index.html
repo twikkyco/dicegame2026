@@ -726,7 +726,7 @@ async function onCredential(credential) {
     $('#retry').onclick = () => { if (!DEMO && window.google) google.accounts.id.disableAutoSelect(); showSignIn(); };
     return;
   }
-  toast(r.code === 'NETWORK' ? MSG.NETWORK : 'Sign-in didn’t go through. Please try again.', 'error');
+  toast(r.code === 'NETWORK' ? MSG.NETWORK : `Sign-in didn’t go through (${r.code || 'ERROR'}). Please try again.`, 'error');
   showSignIn();
 }
 function gateReady(returning) {
